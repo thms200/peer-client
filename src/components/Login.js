@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import FacebookLogin from 'react-facebook-login';
 import styled from 'styled-components';
 import { logInFacebook } from '../utils/api';
-import { loginUser } from '../actions';
+import { setLoading } from '../actions';
 import message from '../constants/message';
 
 const Wrapper = styled('div')`
@@ -58,9 +58,10 @@ const FacebookRow = styled(Row)`
 export default function Login() {
   const dispatch = useDispatch();
 
+  const onClick = () => dispatch(setLoading(true));
   const responseFacebook = async(response) => {
     try {
-      await logInFacebook(dispatch, loginUser, response);
+      await logInFacebook(dispatch, response);
     } catch(err) {
       alert(message.invalidLogin);
     }
@@ -74,8 +75,8 @@ export default function Login() {
       <FacebookRow>
         <FacebookLogin
           appId={process.env.REACT_APP_FACEBOOK_ID}
-          autoLoad={false}
           fields="name,email,picture"
+          onClick={onClick}
           callback={responseFacebook}
           cssClass="facebookButton"
           icon="fa-facebook"
