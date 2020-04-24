@@ -6,3 +6,10 @@ export function loginUser(userInfo){
     userInfo,
   };
 }
+
+export function setLoading(isLoading){
+  return {
+    type: types.LOADING,
+    isLoading,
+  };
+}

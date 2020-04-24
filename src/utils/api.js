@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { loginUser, setLoading } from '../actions';
 import message from '../constants/message';
 
-export const logInFacebook = async(dispatch, action, response) => {
+export const logInFacebook = async(dispatch, response) => {
   try {
     const { email, name, picture } = response;
     const picture_url = picture.data.url;
@@ -17,7 +18,8 @@ export const logInFacebook = async(dispatch, action, response) => {
         const { data } = res;
         if (data.result === 'ng') return alert(data.errMessage);
         localStorage.setItem('token', data.token);
-        dispatch(action(data.userInfo));
+        dispatch(loginUser(data.userInfo));
+        dispatch(setLoading(false));
       });
   } catch (err) {
     alert(message.invalidLogin);
