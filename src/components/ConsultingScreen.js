@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -10,6 +10,7 @@ import {
   initialCustomers,
   initialCurrentCustomer,
 } from '../actions';
+import { alertMsg } from '../constants/message';
 
 const Section = styled('section')`
   display: flex;
@@ -44,6 +45,9 @@ export default function ConsultingScreen() {
   const dispatch = useDispatch();
   const consultant = useSelector(({ user: { userInfo: { id } } }) => id);
   const socket = useSelector(({ socket: { socket } }) => socket);
+  const customers = useSelector(({ customers: { customers } }) => customers);
+  const [activeOn, setActiveOn] = useState(false);
+  const [activeStart, setActiveStart] = useState(false);
   
   useEffect(() => {
     socket && socket.on('currentCustomers', currentCustomers => {
@@ -52,6 +56,8 @@ export default function ConsultingScreen() {
   }, [socket]);
 
   const onConsultant = () => {
+    if (activeOn) return alert(alertMsg.alreadyOn);
+    setActiveOn(true);
     const initailSocket = io(process.env.REACT_APP_API_URL);
     initailSocket.emit('onConsultant', consultant, (message) => {
       alert(message);
@@ -60,6 +66,9 @@ export default function ConsultingScreen() {
   };
 
   const offConsultant = () => {
+    if (!activeOn) return alert(alertMsg.invalidOn);
+    if (activeStart) return alert(alertMsg.invalidOff);
+    setActiveOn(false);
     socket.emit('offConsulting', consultant, (message) => {
       alert(message);
       dispatch(initialCustomers());
@@ -69,6 +78,10 @@ export default function ConsultingScreen() {
   };
 
   const onStartConsulting = () => {
+    if (!activeOn) return alert(alertMsg.invalidOn);
+    if (activeStart) return alert(alertMsg.alreadyStart);
+    if (!customers.length) return alert(alertMsg.noCustomer);
+    setActiveStart(true);
     socket.emit('startConsulting', consultant, (data) => {
       alert(data.message);
       if (data.customer) dispatch(getCurrentCustomer(data.customer));
@@ -76,6 +89,9 @@ export default function ConsultingScreen() {
   };
 
   const onEndConsulting = () => {
+    if (!activeOn) return alert(alertMsg.invalidOn);
+    if (!activeStart) return alert(alertMsg.invalidStart);
+    setActiveStart(false);
     socket.emit('endConsulting', (message) => {
       alert(message);
       dispatch(initialCurrentCustomer());

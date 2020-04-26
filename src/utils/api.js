@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { loginUser, setLoading } from '../actions';
-import message from '../constants/message';
+import { message } from '../constants/message';
 
 export const logInFacebook = async(dispatch, response) => {
   try {

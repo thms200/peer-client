@@ -4,7 +4,7 @@ import FacebookLogin from 'react-facebook-login';
 import styled from 'styled-components';
 import { logInFacebook } from '../utils/api';
 import { setLoading } from '../actions';
-import message from '../constants/message';
+import { message } from '../constants/message';
 
 const Wrapper = styled('div')`
   position: absolute;
