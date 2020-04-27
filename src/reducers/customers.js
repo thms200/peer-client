@@ -7,7 +7,7 @@ import {
 
 const initialState = {
   customers: [],
-  currentCostomer: '',
+  currentCustomer: '',
 };
 
 export function customers(state = initialState, action) {
@@ -25,12 +25,12 @@ export function customers(state = initialState, action) {
     case GET_CURRENT_CUSTOMER:
       return {
         ...state,
-        currentCostomer: action.customer,
+        currentCustomer: action.customer,
       };
     case INITIAL_CURRENT_CUSTOMER:
       return {
         ...state,
-        currentCostomer: '',
+        currentCustomer: '',
       };
     default:
       return state;

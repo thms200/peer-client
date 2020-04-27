@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 import { useDispatch, useSelector } from 'react-redux';
+import Peer from 'simple-peer';
 import styled from 'styled-components';
 import {
   connectSocket,
@@ -31,6 +32,12 @@ const VideoWrapper = styled('div')`
   background-color: white;
 `;
 
+const Video = styled('video')`
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+`;
+
 const ButtonWrapper = styled('div')`
   display: flex;
 `;
@@ -46,8 +53,12 @@ export default function ConsultingScreen() {
   const consultant = useSelector(({ user: { userInfo: { id } } }) => id);
   const socket = useSelector(({ socket: { socket } }) => socket);
   const customers = useSelector(({ customers: { customers } }) => customers);
+  const currentCustomer = useSelector(({ cusotmers: { currentCustomer } }) => currentCustomer);
   const [activeOn, setActiveOn] = useState(false);
   const [activeStart, setActiveStart] = useState(false);
+  const [stream, setStream] = useState(null);
+  const consultantRef = useRef(null);
+  const customerRef = useRef(null);
   
   useEffect(() => {
     socket && socket.on('currentCustomers', currentCustomers => {
@@ -55,11 +66,19 @@ export default function ConsultingScreen() {
     });
   }, [socket]);
 
+  useEffect(() => {
+    (async() => {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+      setStream(stream);
+      if (consultantRef) consultantRef.current.srcObject = stream;
+    })();
+  }, [socket]);
+
   const onConsultant = () => {
     if (activeOn) return alert(alertMsg.alreadyOn);
     setActiveOn(true);
     const initailSocket = io(process.env.REACT_APP_API_URL);
-    initailSocket.emit('onConsultant', consultant, (message) => {
+    initailSocket.emit('onConsulting', consultant, (message) => {
       alert(message);
     });
     dispatch(connectSocket(initailSocket));
@@ -82,9 +101,26 @@ export default function ConsultingScreen() {
     if (activeStart) return alert(alertMsg.alreadyStart);
     if (!customers.length) return alert(alertMsg.noCustomer);
     setActiveStart(true);
-    socket.emit('startConsulting', consultant, (data) => {
-      alert(data.message);
-      if (data.customer) dispatch(getCurrentCustomer(data.customer));
+
+    socket.emit('startConsulting', consultant, (socketData) => {
+      alert(socketData.message);
+      const peer = new Peer({
+        initiator: false,
+        trickle: false,
+        stream,
+      });
+
+      const customerId = socketData.customerInfo.id;
+      peer.on('signal', signal => {
+        socket.emit('acceptCustomer', { signal, to: customerId });
+      });
+
+      peer.signal(socketData.customerInfo.signal);
+
+      peer.on('stream', stream => {
+        if (customerRef) customerRef.current.srcObject = stream;
+      });
+      if (socketData.customerInfo) dispatch(getCurrentCustomer(socketData.customerInfo));
     });
   };
 
@@ -94,14 +130,28 @@ export default function ConsultingScreen() {
     setActiveStart(false);
     socket.emit('endConsulting', (message) => {
       alert(message);
+      socket.disconnect();
       dispatch(initialCurrentCustomer());
+      setStream(null);
     });
   };
 
   return (
     <Section>
-      <VideoWrapper></VideoWrapper>
-      <VideoWrapper></VideoWrapper>
+      <div>Brand</div>
+      <VideoWrapper>
+        <Video
+          playsInline autoPlay
+          ref={consultantRef}
+        />
+      </VideoWrapper>
+      <div>{currentCustomer.nickname}님</div>
+      <VideoWrapper>
+        <Video
+          playsInline autoPlay
+          ref={customerRef}
+        />
+      </VideoWrapper>
       <ButtonWrapper>
         <Button onClick={onConsultant}>On</Button>
         <Button onClick={offConsultant}>Off</Button>
