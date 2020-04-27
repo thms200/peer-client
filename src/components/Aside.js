@@ -2,21 +2,29 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Wrapper = styled('div')`
+  display: flex;
+  align-items: center;
   width: 30%;
   height: 90vh;
   border-right: 1px solid grey;
 `;
 
-export default function Aside({ Customers }) {
+const CustomerBox = styled('div')`
+  width: 200px;
+  height: 80px;
+  padding: 20px;
+  margin: 20px;
+`;
 
+export default function Aside({ customers }) {
   return (
     <Wrapper>
-      {Customers.map((customer) => {
-        const customerName = Object.keys(customer)[0];
+      {customers && customers.map((customer) => {
+        const customerName = customer.nickname;
         return (
-          <div key={customerName}>
+          <CustomerBox key={customer.id}>
             {customerName}
-          </div>
+          </CustomerBox>
         );
       })}
     </Wrapper>

@@ -1,4 +1,4 @@
-import { LOGIN_USER } from '../constants/actionTypes';
+import { LOGIN_USER, LOGOUT_USER } from '../constants/actionTypes';
 
 const initialState = {
   isLogin: false,
@@ -12,6 +12,12 @@ export function user(state = initialState, action) {
         ...state,
         isLogin: true,
         userInfo: action.userInfo,
+      };
+    case LOGOUT_USER:
+      return {
+        ...state,
+        isLogin: false,
+        userInfo: {},
       };
     default:
       return state;
