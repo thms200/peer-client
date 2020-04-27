@@ -7,6 +7,12 @@ export function loginUser(userInfo){
   };
 }
 
+export function logoutUser(){
+  return {
+    type: types.LOGOUT_USER,
+  };
+}
+
 export function setLoading(isLoading){
   return {
     type: types.LOADING,

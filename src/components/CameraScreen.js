@@ -18,6 +18,7 @@ const Section = styled('section')`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  width: 70%;
 `;
 
 const VideoWrapper = styled('div')`
@@ -53,25 +54,16 @@ export default function ConsultingScreen() {
   const consultant = useSelector(({ user: { userInfo: { id } } }) => id);
   const socket = useSelector(({ socket: { socket } }) => socket);
   const customers = useSelector(({ customers: { customers } }) => customers);
-  const currentCustomer = useSelector(({ cusotmers: { currentCustomer } }) => currentCustomer);
+  const currentCustomer = useSelector(({ customers: { currentCustomer } }) => currentCustomer);
   const [activeOn, setActiveOn] = useState(false);
   const [activeStart, setActiveStart] = useState(false);
-  const [stream, setStream] = useState(null);
   const consultantRef = useRef(null);
   const customerRef = useRef(null);
-  
+
   useEffect(() => {
     socket && socket.on('currentCustomers', currentCustomers => {
       dispatch(getCustomers(currentCustomers));
     });
-  }, [socket]);
-
-  useEffect(() => {
-    (async() => {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-      setStream(stream);
-      if (consultantRef) consultantRef.current.srcObject = stream;
-    })();
   }, [socket]);
 
   const onConsultant = () => {
@@ -91,35 +83,41 @@ export default function ConsultingScreen() {
     socket.emit('offConsulting', consultant, (message) => {
       alert(message);
       dispatch(initialCustomers());
-      socket.disconnect();
       dispatch(initialSocket());
+      socket.disconnect();
     });
   };
 
-  const onStartConsulting = () => {
+  const onStartConsulting = async() => {
     if (!activeOn) return alert(alertMsg.invalidOn);
     if (activeStart) return alert(alertMsg.alreadyStart);
-    if (!customers.length) return alert(alertMsg.noCustomer);
+    if (!customers || !customers.length) return alert(alertMsg.noCustomer);
     setActiveStart(true);
+
+    let streamConsultant;
+    try {
+      streamConsultant = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });;
+      if (consultantRef.current) consultantRef.current.srcObject = streamConsultant;
+    } catch (err) {
+      alert('카메라와 마이크 접근 권한을 허락해주세요!');
+    }
 
     socket.emit('startConsulting', consultant, (socketData) => {
       alert(socketData.message);
       const peer = new Peer({
         initiator: false,
         trickle: false,
-        stream,
+        stream: streamConsultant,
       });
 
       const customerId = socketData.customerInfo.id;
       peer.on('signal', signal => {
         socket.emit('acceptCustomer', { signal, to: customerId });
       });
-
-      peer.signal(socketData.customerInfo.signal);
-
       peer.on('stream', stream => {
-        if (customerRef) customerRef.current.srcObject = stream;
+        if (customerRef.current) customerRef.current.srcObject = stream;
       });
+      peer.signal(socketData.customerInfo.signal);
       if (socketData.customerInfo) dispatch(getCurrentCustomer(socketData.customerInfo));
     });
   };
@@ -128,11 +126,9 @@ export default function ConsultingScreen() {
     if (!activeOn) return alert(alertMsg.invalidOn);
     if (!activeStart) return alert(alertMsg.invalidStart);
     setActiveStart(false);
-    socket.emit('endConsulting', (message) => {
+    socket.emit('endConsulting', currentCustomer.nickname, (message) => {
       alert(message);
-      socket.disconnect();
       dispatch(initialCurrentCustomer());
-      setStream(null);
     });
   };
 
@@ -141,14 +137,19 @@ export default function ConsultingScreen() {
       <div>Brand</div>
       <VideoWrapper>
         <Video
-          playsInline autoPlay
+          playsInline
+          autoPlay
           ref={consultantRef}
         />
       </VideoWrapper>
-      <div>{currentCustomer.nickname}님</div>
+      {currentCustomer.nickname
+        ? <div>{currentCustomer.nickname}님</div>
+        : <div>상담을 시작하세요.</div>
+      }
       <VideoWrapper>
         <Video
-          playsInline autoPlay
+          playsInline
+          autoPlay
           ref={customerRef}
         />
       </VideoWrapper>
