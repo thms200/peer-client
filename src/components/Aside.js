@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 const Wrapper = styled('div')`
   display: flex;
+  flex-direction: column;
   align-items: center;
   width: 30%;
   height: 90vh;
@@ -10,10 +11,19 @@ const Wrapper = styled('div')`
 `;
 
 const CustomerBox = styled('div')`
-  width: 200px;
-  height: 80px;
-  padding: 20px;
-  margin: 20px;
+  width: 80%;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  color: white;
+  font-size: 25px;
+  text-align: center;
+  background-color: rgb(105, 115, 251);;
+  &:hover {
+    cursor: pointer;
+    background-color: black;
+    text-decoration: underline;
+  }
 `;
 
 export default function Aside({ customers }) {

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 import { useDispatch, useSelector } from 'react-redux';
 import Peer from 'simple-peer';
+import { FaRegIdBadge, FaRegLaughWink, FaSlideshare, FaHeadset } from 'react-icons/fa';
 import styled from 'styled-components';
 import {
   connectSocket,
@@ -34,19 +35,46 @@ const VideoWrapper = styled('div')`
 `;
 
 const Video = styled('video')`
-  width: 100%;
-  height: 100%;
+  width: ${props => {
+    if (props.isVoice) return '0%';
+    return '100%';
+  }};
+  height: ${props => {
+    if (props.isVoice) return '0%';
+    return '100%';
+  }};
   border-radius: 10px;
 `;
 
 const ButtonWrapper = styled('div')`
   display: flex;
+  justify-content: space-between;
+  width: 100%;
 `;
 
 const Button = styled('button')`
+  margin: 10px;
+  border-radius: 10px;
+  width: 100px;
+  color: white;
+  background-color: ${props => {
+    if (props.activeOn || props.activeStart) return 'black';
+    else return 'rgb(105, 115, 251)';
+  }};
   &:hover {
     cursor: pointer;
+    background-color: black;
+    text-decoration: underline;
   }
+`;
+
+const H1Text = styled('h1')`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  color: rgb(105, 115, 251);
+  text-align: center;
 `;
 
 export default function ConsultingScreen() {
@@ -132,32 +160,45 @@ export default function ConsultingScreen() {
     });
   };
 
+  const isVoice = currentCustomer.mode === 'Voice';
   return (
     <Section>
-      <div>Brand</div>
-      <VideoWrapper>
-        <Video
-          playsInline
-          autoPlay
-          ref={consultantRef}
-        />
-      </VideoWrapper>
-      {currentCustomer.nickname
-        ? <div>{currentCustomer.nickname}님</div>
-        : <div>상담을 시작하세요.</div>
-      }
-      <VideoWrapper>
-        <Video
-          playsInline
-          autoPlay
-          ref={customerRef}
-        />
-      </VideoWrapper>
+      <div>
+        <H1Text><FaRegIdBadge size={21}/>Brand</H1Text>
+        <VideoWrapper>
+          {isVoice && <FaHeadset size={150} color={'rgb(105, 115, 251)'} />}
+          <Video
+            playsInline
+            autoPlay
+            ref={consultantRef}
+            isVoice={isVoice}
+          />
+        </VideoWrapper>
+      </div>
+      <div>
+        {currentCustomer.nickname
+          ? <H1Text><FaRegLaughWink size={20} /> {currentCustomer.nickname}님</H1Text>
+          : <H1Text><FaSlideshare size={20} />상담을 시작하세요.</H1Text>
+        }
+        <VideoWrapper>
+          {isVoice && <FaHeadset size={150} color={'rgb(105, 115, 251)'} />}
+          <Video
+            playsInline
+            autoPlay
+            ref={customerRef}
+            isVoice={isVoice}
+          />
+        </VideoWrapper>
+      </div>
       <ButtonWrapper>
-        <Button onClick={onConsultant}>On</Button>
-        <Button onClick={offConsultant}>Off</Button>
-        <Button onClick={onStartConsulting}>Start</Button>
-        <Button onClick={onEndConsulting}>End</Button>
+        <div>
+          <Button activeOn={activeOn} onClick={onConsultant}>On</Button>
+          <Button onClick={offConsultant}>Off</Button>
+        </div>
+        <div>
+          <Button activeStart={activeStart} onClick={onStartConsulting}>Start</Button>
+          <Button onClick={onEndConsulting}>End</Button>
+        </div>
       </ButtonWrapper>
     </Section>
   );

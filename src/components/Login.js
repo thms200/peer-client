@@ -48,6 +48,12 @@ const FacebookRow = styled(Row)`
     color: white;
     font-size: 20px;
     font-family: 'Baloo Tammudu 2', cursive;
+    &:hover {
+      cursor: pointer;
+    }
+    &:focus {
+      outline: none;
+    }
   }
 
   i {

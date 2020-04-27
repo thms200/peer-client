@@ -28,6 +28,10 @@ const GlobalStyle = createGlobalStyle`
   button {
     font-family: 'Gamja Flower', cursive;
     cursor: pointer;
+    font-size: 15px;
+    &:focus {
+      outline: none;
+    }
   }
 `;
 
