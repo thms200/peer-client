@@ -53,7 +53,7 @@ export default function ConsultingScreen() {
   const consultant = useSelector(({ user: { userInfo: { id } } }) => id);
   const socket = useSelector(({ socket: { socket } }) => socket);
   const customers = useSelector(({ customers: { customers } }) => customers);
-  const currentCustomer = useSelector(({ cusotmers: { currentCustomer } }) => currentCustomer);
+  const currentCustomer = useSelector(({ customers: { currentCustomer } }) => currentCustomer);
   const [activeOn, setActiveOn] = useState(false);
   const [activeStart, setActiveStart] = useState(false);
   const [stream, setStream] = useState(null);
@@ -70,7 +70,7 @@ export default function ConsultingScreen() {
     (async() => {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
       setStream(stream);
-      if (consultantRef) consultantRef.current.srcObject = stream;
+      if (consultantRef.current) consultantRef.current.srcObject = stream;
     })();
   }, [socket]);
 
@@ -91,15 +91,15 @@ export default function ConsultingScreen() {
     socket.emit('offConsulting', consultant, (message) => {
       alert(message);
       dispatch(initialCustomers());
-      socket.disconnect();
       dispatch(initialSocket());
+      socket.disconnect();
     });
   };
 
   const onStartConsulting = () => {
     if (!activeOn) return alert(alertMsg.invalidOn);
     if (activeStart) return alert(alertMsg.alreadyStart);
-    if (!customers.length) return alert(alertMsg.noCustomer);
+    if (!customers || !customers.length) return alert(alertMsg.noCustomer);
     setActiveStart(true);
 
     socket.emit('startConsulting', consultant, (socketData) => {
@@ -114,12 +114,10 @@ export default function ConsultingScreen() {
       peer.on('signal', signal => {
         socket.emit('acceptCustomer', { signal, to: customerId });
       });
-
-      peer.signal(socketData.customerInfo.signal);
-
       peer.on('stream', stream => {
-        if (customerRef) customerRef.current.srcObject = stream;
+        if (customerRef.current) customerRef.current.srcObject = stream;
       });
+      peer.signal(socketData.customerInfo.signal);
       if (socketData.customerInfo) dispatch(getCurrentCustomer(socketData.customerInfo));
     });
   };
@@ -128,11 +126,10 @@ export default function ConsultingScreen() {
     if (!activeOn) return alert(alertMsg.invalidOn);
     if (!activeStart) return alert(alertMsg.invalidStart);
     setActiveStart(false);
-    socket.emit('endConsulting', (message) => {
+    socket.emit('endConsulting', currentCustomer.nickname, (message) => {
       alert(message);
-      socket.disconnect();
-      dispatch(initialCurrentCustomer());
       setStream(null);
+      dispatch(initialCurrentCustomer());
     });
   };
 
@@ -141,14 +138,16 @@ export default function ConsultingScreen() {
       <div>Brand</div>
       <VideoWrapper>
         <Video
-          playsInline autoPlay
+          playsInline
+          autoPlay
           ref={consultantRef}
         />
       </VideoWrapper>
-      <div>{currentCustomer.nickname}님</div>
+      <div>{`${currentCustomer.nickname}님` || '상담을 시작하세요.'}</div>
       <VideoWrapper>
         <Video
-          playsInline autoPlay
+          playsInline
+          autoPlay
           ref={customerRef}
         />
       </VideoWrapper>
