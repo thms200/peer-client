@@ -29,9 +29,16 @@ const HeaderLi = styled('li')`
 `;
 
 const Titile = styled('h1')`
+  display: flex;
+  align-items: center;
   font-family: 'Pacifico', cursive;
   font-size: 40px;
   margin: 0;
+`;
+
+const TitleImg = styled('img')`
+  width: 50px;
+  height: 50px;
 `;
 
 const Button = styled('button')`
@@ -56,7 +63,10 @@ export default function Header() {
   return (
     <Wrapper>
       <HeaderDiv>
-        <Titile>Peer</Titile>
+        <Titile>
+          <TitleImg src="https://img.icons8.com/nolan/96/microphone.png" alt="peer" />
+          Peer
+        </Titile>
         <nav>
           <HeaderUi>
             <HeaderLi><Link to="/">Home</Link></HeaderLi>
