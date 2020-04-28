@@ -33,6 +33,26 @@ export function initialSocket() {
   };
 }
 
+export function connectConsultantStream(consultantStream) {
+  return {
+    type: types.CONNECT_CONSULTANT_STREAM,
+    consultantStream,
+  };
+}
+
+export function connectCustomerStream(customerStream) {
+  return {
+    type: types.CONNECT_CUSTOMER_STREAM,
+    customerStream,
+  };
+}
+
+export function initialStream() {
+  return {
+    type: types.INITIAL_STREAM,
+  };
+}
+
 export function getCustomers(customers) {
   return {
     type: types.GET_CUSTOMERS,

@@ -1,8 +1,7 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { logoutUser } from '../actions';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 const Wrapper = styled('div')`
   height: 10vh;
@@ -53,13 +52,7 @@ const Button = styled('button')`
   }
 `;
 
-export default function Header() {
-  const dispatch = useDispatch();
-  const onLogout = () => {
-    dispatch(logoutUser());
-    localStorage.removeItem('token');
-  };
-
+export default function Header({ onClick }) {
   return (
     <Wrapper>
       <HeaderDiv>
@@ -73,7 +66,7 @@ export default function Header() {
             <HeaderLi><Link to="/consulting">Consulting</Link></HeaderLi>
             <HeaderLi><Link to="/install">Install</Link></HeaderLi>
             <HeaderLi><Link to="/demo">Demo</Link></HeaderLi>
-            <HeaderLi><Button onClick={onLogout}>Logout</Button></HeaderLi>
+            <HeaderLi><Button onClick={onClick}>Logout</Button></HeaderLi>
           </HeaderUi>
         </nav>
       </HeaderDiv>
@@ -81,3 +74,7 @@ export default function Header() {
     </Wrapper>
   );
 }
+
+Header.prototype = {
+  onClick: PropTypes.func.isRequired,
+};

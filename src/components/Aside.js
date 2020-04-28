@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 const Wrapper = styled('div')`
   display: flex;
@@ -40,3 +41,7 @@ export default function Aside({ customers }) {
     </Wrapper>
   );
 }
+
+Aside.prototype = {
+  customers: PropTypes.array.isRequired,
+};

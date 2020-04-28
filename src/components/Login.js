@@ -1,10 +1,7 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import FacebookLogin from 'react-facebook-login';
 import styled from 'styled-components';
-import { logInFacebook } from '../utils/api';
-import { setLoading } from '../actions';
-import { message } from '../constants/message';
+import PropTypes from 'prop-types';
 
 const Wrapper = styled('div')`
   position: absolute;
@@ -61,18 +58,7 @@ const FacebookRow = styled(Row)`
   }
 `;
 
-export default function Login() {
-  const dispatch = useDispatch();
-
-  const onClick = () => dispatch(setLoading(true));
-  const responseFacebook = async(response) => {
-    try {
-      await logInFacebook(dispatch, response);
-    } catch(err) {
-      alert(message.invalidLogin);
-    }
-  };
-
+export default function Login({ onClick, callback }) {
   return (
     <Wrapper>
       <Row>
@@ -83,7 +69,7 @@ export default function Login() {
           appId={process.env.REACT_APP_FACEBOOK_ID}
           fields="name,email,picture"
           onClick={onClick}
-          callback={responseFacebook}
+          callback={callback}
           cssClass="facebookButton"
           icon="fa-facebook"
         />
@@ -91,3 +77,8 @@ export default function Login() {
     </Wrapper>
   );
 }
+
+Login.prototype = {
+  onClick: PropTypes.func.isRequired,
+  callback: PropTypes.func.isRequired,
+};
