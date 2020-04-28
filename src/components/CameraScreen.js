@@ -84,7 +84,6 @@ export default function CameraScreen({
   const customerRef = useRef(null);
 
   useEffect(() => {
-    console.log(typeof consultantStream, 'type');
     if (consultantRef.current) consultantRef.current.srcObject = consultantStream;
   }, [consultantStream]);
 
@@ -108,7 +107,7 @@ export default function CameraScreen({
   const handleStartConsulting = async() => {
     if (!activeOn) return alert(alertMsg.invalidOn);
     if (activeStart) return alert(alertMsg.alreadyStart);
-    if (!customers.length) return alert(alertMsg.noCustomer);
+    if (!customers) return alert(alertMsg.noCustomer);
     setActiveStart(true);
     onStartConsulting();
   };

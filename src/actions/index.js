@@ -47,6 +47,13 @@ export function connectCustomerStream(customerStream) {
   };
 }
 
+export function getMediaRecorder(mediaRecorder) {
+  return {
+    type: types.GET_MEDIA_RECORDER,
+    mediaRecorder,
+  };
+}
+
 export function initialStream() {
   return {
     type: types.INITIAL_STREAM,

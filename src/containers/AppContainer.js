@@ -52,7 +52,7 @@ function AppContainer() {
   };
   const onLogout = () => {
     dispatch(logoutUser());
-    localStorage.removeItem('token');
+    localStorage.removeItem('x-access-token');
   };
 
   if (isLoading) {

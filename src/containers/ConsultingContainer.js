@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import io from 'socket.io-client';
 import Peer from 'simple-peer';
@@ -11,11 +11,14 @@ import {
   getCurrentCustomer,
   connectConsultantStream,
   connectCustomerStream,
+  getMediaRecorder,
   initialStream,
   initialSocket,
   initialCustomers,
   initialCurrentCustomer,
 } from '../actions';
+import { saveAudio } from '../utils/api';
+import { alertMsg } from '../constants/message';
 
 const Wrapper = styled('div')`
   display: flex;
@@ -28,9 +31,11 @@ export default function ConsultingContainer() {
   const customers = useSelector(({ customers: { customers } }) => customers);
   const currentCustomer = useSelector(({ customers: { currentCustomer } }) => currentCustomer);
   const waitingCustomers = useSelector(({ customers: { customers } }) => customers);
-  const consultantStream = useSelector(({ stream: { consultantStream } }) => consultantStream);
-  const customerStream = useSelector(({ stream: { customerStream } }) => customerStream);
-  const isVoice = currentCustomer.mode === 'Voice';
+  const consultantStream = useSelector(({ mediaStream: { consultantStream } }) => consultantStream);
+  const customerStream = useSelector(({ mediaStream: { customerStream } }) => customerStream);
+  const mediaRecorder = useSelector(({ mediaStream: { mediaRecorder } }) => mediaRecorder);
+  const [isVoice, setIsVoice] = useState(false);
+  const customerName = currentCustomer.nickname;
 
   useEffect(() => {
     socket && socket.on('currentCustomers', currentCustomers => {
@@ -56,17 +61,24 @@ export default function ConsultingContainer() {
     });
   };
 
-  const onStartConsulting = async() => {
-    let streamConsultant;
-    try {
-      streamConsultant = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });;
-      dispatch(connectConsultantStream(streamConsultant));
-    } catch (err) {
-      alert('카메라와 마이크 접근 권한을 허락해주세요!');
-    }
-    
-    socket.emit('startConsulting', consultant, (socketData) => {
+  const onStartConsulting = () => {
+    socket.emit('startConsulting', consultant, async(socketData) => {
       alert(socketData.message);
+      let streamConsultant;
+      try {
+        const isVoice = socketData.customerInfo.mode === 'Voice';
+        setIsVoice(isVoice);
+        streamConsultant = await navigator.mediaDevices
+          .getUserMedia({ audio: true, video: !isVoice });;
+        dispatch(connectConsultantStream(streamConsultant));
+      } catch (err) {
+        alert(alertMsg.requesPermission);
+      }
+
+      const mediaRecorder = new MediaRecorder(streamConsultant, { mimeType: 'audio/webm' });
+      mediaRecorder.start();
+      dispatch(getMediaRecorder(mediaRecorder));
+
       const peer = new Peer({
         initiator: false,
         trickle: false,
@@ -81,15 +93,20 @@ export default function ConsultingContainer() {
         dispatch(connectCustomerStream(stream));
       });
       peer.signal(socketData.customerInfo.signal);
-      if (socketData.customerInfo) dispatch(getCurrentCustomer(socketData.customerInfo));
+      dispatch(getCurrentCustomer(socketData.customerInfo));
     });
   };
 
-  const onEndConsulting = () => {
+  const onEndConsulting = async() => {
     socket.emit('endConsulting', currentCustomer.nickname, (message) => {
       alert(message);
       dispatch(initialCurrentCustomer());
     });
+    mediaRecorder.stop();
+    mediaRecorder.ondataavailable = (blob) => {
+      const newBlob = new Blob([blob.data]);
+      saveAudio(newBlob, consultant, customerName);
+    };
   };
 
   return (
@@ -103,7 +120,7 @@ export default function ConsultingContainer() {
         consultantStream={consultantStream}
         customerStream={customerStream}
         customers={customers}
-        customerName={currentCustomer.nickname}
+        customerName={customerName}
         isVoice={isVoice}
       />
     </Wrapper>
