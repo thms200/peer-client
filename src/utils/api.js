@@ -17,12 +17,38 @@ export const logInFacebook = async(dispatch, response) => {
       .then(async(res) => {
         const { data } = res;
         if (data.result === 'ng') return alert(data.errMessage);
-        localStorage.setItem('token', data.token);
+        localStorage.setItem('x-access-token', `Bearer ${data.token}`);
         dispatch(loginUser(data.userInfo));
         dispatch(setLoading(false));
       });
   } catch (err) {
     alert(message.invalidLogin);
+    console.warn(err);
+  }
+};
+
+export const saveAudio = async(blob, consultantId, customerName, isFinal) => {
+  try {
+    const token = localStorage.getItem('x-access-token');
+    const formdata = new FormData();
+    formdata.append('audio', blob, customerName);
+    formdata.append('isFinal', isFinal);
+
+    return await axios({
+      method: 'post',
+      url: `${process.env.REACT_APP_API_URL}/api/users/${consultantId}/consultings`,
+      headers: {
+        'Content-Type': 'application/json',
+        'x-access-token': token
+      },
+      data: formdata,
+    })
+      .then((res) => {
+        const { data } = res;
+        if (data.result === 'ng') return alert(data.errMessage);
+      });
+  } catch(err) {
+    alert(message.invalidSave);
     console.warn(err);
   }
 };
