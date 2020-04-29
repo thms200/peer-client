@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import io from 'socket.io-client';
 import Peer from 'simple-peer';
@@ -37,16 +37,13 @@ export default function ConsultingContainer() {
   const [isVoice, setIsVoice] = useState(false);
   const customerName = currentCustomer.nickname;
 
-  useEffect(() => {
-    socket && socket.on('currentCustomers', currentCustomers => {
-      dispatch(getCustomers(currentCustomers));
-    });
-  }, [socket]);
-
   const onConsultant = () => {
     const initailSocket = io(process.env.REACT_APP_API_URL);
     initailSocket.emit('onConsulting', consultant, (message) => {
       alert(message);
+    });
+    initailSocket.on('currentCustomers', currentCustomers => {
+      dispatch(getCustomers(currentCustomers));
     });
     dispatch(connectSocket(initailSocket));
   };
@@ -65,9 +62,8 @@ export default function ConsultingContainer() {
     socket.emit('startConsulting', consultant, async(socketData) => {
       alert(socketData.message);
       const { nickname, mode } = socketData.customerInfo;
-      let streamConsultant;
       const isVoice = mode === 'Voice';
-
+      let streamConsultant;
       try {
         setIsVoice(isVoice);
         streamConsultant = await navigator.mediaDevices
