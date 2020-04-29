@@ -27,13 +27,12 @@ export const logInFacebook = async(dispatch, response) => {
   }
 };
 
-export const saveAudio = async(blob, consultantId, customerName) => {
+export const saveAudio = async(blob, consultantId, customerName, isFinal) => {
   try {
     const token = localStorage.getItem('x-access-token');
     const formdata = new FormData();
     formdata.append('audio', blob, customerName);
-    formdata.append('timeStamp', Date.now().toString());
-    formdata.append('customer', customerName);
+    formdata.append('isFinal', isFinal);
 
     return await axios({
       method: 'post',

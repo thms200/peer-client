@@ -64,19 +64,26 @@ export default function ConsultingContainer() {
   const onStartConsulting = () => {
     socket.emit('startConsulting', consultant, async(socketData) => {
       alert(socketData.message);
+      const { nickname, mode } = socketData.customerInfo;
       let streamConsultant;
+      const isVoice = mode === 'Voice';
+
       try {
-        const isVoice = socketData.customerInfo.mode === 'Voice';
         setIsVoice(isVoice);
         streamConsultant = await navigator.mediaDevices
-          .getUserMedia({ audio: true, video: !isVoice });;
+          .getUserMedia({ audio: true, video: !isVoice });
         dispatch(connectConsultantStream(streamConsultant));
       } catch (err) {
         alert(alertMsg.requesPermission);
       }
 
-      const mediaRecorder = new MediaRecorder(streamConsultant, { mimeType: 'audio/webm' });
-      mediaRecorder.start();
+      const type = isVoice ? 'audio/webm' : 'video/webm';
+      const mediaRecorder = new MediaRecorder(streamConsultant, { mimeType: type });
+      mediaRecorder.start(5000);
+      mediaRecorder.ondataavailable = (blob) => {
+        const newBlob = new Blob([blob.data]);
+        saveAudio(newBlob, consultant, nickname, false);
+      };
       dispatch(getMediaRecorder(mediaRecorder));
 
       const peer = new Peer({
@@ -105,7 +112,7 @@ export default function ConsultingContainer() {
     mediaRecorder.stop();
     mediaRecorder.ondataavailable = (blob) => {
       const newBlob = new Blob([blob.data]);
-      saveAudio(newBlob, consultant, customerName);
+      saveAudio(newBlob, consultant, customerName, true);
     };
   };
 
