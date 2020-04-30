@@ -27,12 +27,39 @@ export const logInFacebook = async(dispatch, response) => {
   }
 };
 
+export const getAuth = async(dispatch, history) => {
+  try {
+    const currentToken = localStorage.getItem('x-access-token');
+    if (!currentToken) return;
+    return await axios({
+      method: 'post',
+      url: `${process.env.REACT_APP_API_URL}/api/users/auth`,
+      headers: {
+        'Content-Type': 'application/json',
+        'x-access-token': `${currentToken}`,
+      },
+    })
+      .then(async(res) => {
+        const { data } = res;
+        if (data.result === 'ng') {
+          localStorage.removeItem('x-access-token');
+          return alert(data.errMessage);
+        }
+        dispatch(loginUser(data.userInfo));
+        history.replace({ pathname: '/' });
+      });
+  } catch (err) {
+    console.warn(err);
+  }
+};
+
 export const saveAudio = async(blob, consultantId, customerName, isFinal) => {
   try {
     const token = localStorage.getItem('x-access-token');
     const formdata = new FormData();
     formdata.append('audio', blob, customerName);
     formdata.append('isFinal', isFinal);
+    formdata.append('customer', customerName);
 
     return await axios({
       method: 'post',

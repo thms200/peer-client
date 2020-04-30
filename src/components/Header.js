@@ -52,7 +52,17 @@ const Button = styled('button')`
   }
 `;
 
-export default function Header({ onClick }) {
+const UserPhoto = styled('img')`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+`;
+
+const HeaderHr = styled('hr')`
+  margin: 2px;
+`;
+
+export default function Header({ onClick, userInfo }) {
   return (
     <Wrapper>
       <HeaderDiv>
@@ -67,14 +77,16 @@ export default function Header({ onClick }) {
             <HeaderLi><Link to="/install">Install</Link></HeaderLi>
             <HeaderLi><Link to="/demo">Demo</Link></HeaderLi>
             <HeaderLi><Button onClick={onClick}>Logout</Button></HeaderLi>
+            <HeaderLi><UserPhoto src={userInfo.picture} /></HeaderLi>
           </HeaderUi>
         </nav>
       </HeaderDiv>
-      <hr />
+      <HeaderHr />
     </Wrapper>
   );
 }
 
 Header.prototype = {
   onClick: PropTypes.func.isRequired,
+  userInfo: PropTypes.object.isRequired,
 };
