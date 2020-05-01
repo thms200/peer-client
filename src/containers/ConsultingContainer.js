@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import io from 'socket.io-client';
 import Peer from 'simple-peer';
@@ -7,14 +7,14 @@ import CameraScreen from '../components/CameraScreen';
 import styled from 'styled-components';
 import {
   connectSocket,
-  getCustomers,
+  getWaitingCustomers,
   getCurrentCustomer,
   connectConsultantStream,
   connectCustomerStream,
   getMediaRecorder,
   initialStream,
   initialSocket,
-  initialCustomers,
+  initialWaitingCustomers,
   initialCurrentCustomer,
 } from '../actions';
 import { saveAudio } from '../utils/api';
@@ -27,26 +27,23 @@ const Wrapper = styled('div')`
 export default function ConsultingContainer() {
   const dispatch = useDispatch();
   const consultant = useSelector(({ user: { userInfo: { id } } }) => id);
+  const consultantName = useSelector(({ user: { userInfo: { name } } }) => name);
   const socket = useSelector(({ socket: { socket } }) => socket);
-  const customers = useSelector(({ customers: { customers } }) => customers);
+  const waitingCustomers = useSelector(({ customers: { waitingCustomers } }) => waitingCustomers);
   const currentCustomer = useSelector(({ customers: { currentCustomer } }) => currentCustomer);
-  const waitingCustomers = useSelector(({ customers: { customers } }) => customers);
   const consultantStream = useSelector(({ mediaStream: { consultantStream } }) => consultantStream);
   const customerStream = useSelector(({ mediaStream: { customerStream } }) => customerStream);
   const mediaRecorder = useSelector(({ mediaStream: { mediaRecorder } }) => mediaRecorder);
   const [isVoice, setIsVoice] = useState(false);
   const customerName = currentCustomer.nickname;
 
-  useEffect(() => {
-    socket && socket.on('currentCustomers', currentCustomers => {
-      dispatch(getCustomers(currentCustomers));
-    });
-  }, [socket]);
-
   const onConsultant = () => {
     const initailSocket = io(process.env.REACT_APP_API_URL);
     initailSocket.emit('onConsulting', consultant, (message) => {
       alert(message);
+    });
+    initailSocket.on('currentCustomers', currentCustomers => {
+      dispatch(getWaitingCustomers(currentCustomers));
     });
     dispatch(connectSocket(initailSocket));
   };
@@ -54,7 +51,7 @@ export default function ConsultingContainer() {
   const offConsultant = () => {
     socket.emit('offConsulting', consultant, (message) => {
       alert(message);
-      dispatch(initialCustomers());
+      dispatch(initialWaitingCustomers());
       dispatch(initialSocket());
       dispatch(initialStream());
       socket.disconnect();
@@ -65,9 +62,8 @@ export default function ConsultingContainer() {
     socket.emit('startConsulting', consultant, async(socketData) => {
       alert(socketData.message);
       const { nickname, mode } = socketData.customerInfo;
-      let streamConsultant;
       const isVoice = mode === 'Voice';
-
+      let streamConsultant;
       try {
         setIsVoice(isVoice);
         streamConsultant = await navigator.mediaDevices
@@ -79,10 +75,10 @@ export default function ConsultingContainer() {
 
       const type = isVoice ? 'audio/webm' : 'video/webm';
       const mediaRecorder = new MediaRecorder(streamConsultant, { mimeType: type });
-      mediaRecorder.start(5000);
+      mediaRecorder.start(60000);
       mediaRecorder.ondataavailable = (blob) => {
         const newBlob = new Blob([blob.data]);
-        saveAudio(newBlob, consultant, nickname, false);
+        saveAudio(newBlob, consultant, nickname, false, isVoice);
       };
       dispatch(getMediaRecorder(mediaRecorder));
 
@@ -112,13 +108,17 @@ export default function ConsultingContainer() {
     mediaRecorder.stop();
     mediaRecorder.ondataavailable = (blob) => {
       const newBlob = new Blob([blob.data]);
-      saveAudio(newBlob, consultant, customerName, true);
+      saveAudio(newBlob, consultant, customerName, true, isVoice);
     };
   };
 
   return (
     <Wrapper>
-      <Aside customers={waitingCustomers} />
+      <Aside
+        customers={waitingCustomers}
+        page="consulting"
+        title="Waiting Customer"
+      />
       <CameraScreen
         onConsultant={onConsultant}
         offConsultant={offConsultant}
@@ -126,7 +126,8 @@ export default function ConsultingContainer() {
         onEndConsulting={onEndConsulting}
         consultantStream={consultantStream}
         customerStream={customerStream}
-        customers={customers}
+        consultantName={consultantName}
+        customers={waitingCustomers}
         customerName={customerName}
         isVoice={isVoice}
       />

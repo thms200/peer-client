@@ -3,13 +3,16 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-const Wrapper = styled('div')`
-  height: 10vh;
+const Wrapper = styled('header')`
+  position: fixed;
+  width: 100%;
+  height: 9vh;
+  background-color: white;
 `;
 
 const HeaderDiv = styled('div')`
   display: flex;
-  align-items: baseline;
+  align-items: flex-end;
   justify-content: space-between;
   padding: 0 10px;
 `;
@@ -30,9 +33,9 @@ const HeaderLi = styled('li')`
 const Titile = styled('h1')`
   display: flex;
   align-items: center;
-  font-family: 'Pacifico', cursive;
+  margin: 0px;
   font-size: 40px;
-  margin: 0;
+  font-family: 'Pacifico', cursive;
 `;
 
 const TitleImg = styled('img')`
@@ -52,7 +55,17 @@ const Button = styled('button')`
   }
 `;
 
-export default function Header({ onClick }) {
+const UserPhoto = styled('img')`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+`;
+
+const HeaderHr = styled('hr')`
+  margin: 2px;
+`;
+
+export default function Header({ onClick, userInfo }) {
   return (
     <Wrapper>
       <HeaderDiv>
@@ -67,14 +80,16 @@ export default function Header({ onClick }) {
             <HeaderLi><Link to="/install">Install</Link></HeaderLi>
             <HeaderLi><Link to="/demo">Demo</Link></HeaderLi>
             <HeaderLi><Button onClick={onClick}>Logout</Button></HeaderLi>
+            <HeaderLi><UserPhoto src={userInfo.picture} /></HeaderLi>
           </HeaderUi>
         </nav>
       </HeaderDiv>
-      <hr />
+      <HeaderHr />
     </Wrapper>
   );
 }
 
 Header.prototype = {
   onClick: PropTypes.func.isRequired,
+  userInfo: PropTypes.object.isRequired,
 };
