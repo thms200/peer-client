@@ -15,7 +15,7 @@ export default function MainContainer() {
   const [historyCustomers, setHistoryCustomers] = useState([]);
   const dispatch = useDispatch();
   const consultant = useSelector(({ user: { userInfo: { id } } }) => id);
-  const consultings = useSelector(({ user: { consulting } }) => consulting);
+  const consultings = useSelector(({ user: { consultings } }) => consultings);
   const onGetConsultings = async(consultant, customer) => {
     const consultings = await fetchConsultings(consultant, customer);
     const historyCustomers = getHistoryCustomers(consultings.data);
