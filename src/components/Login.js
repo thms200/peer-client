@@ -17,8 +17,8 @@ const Wrapper = styled('div')`
 const Title = styled('div')`
   color: white;
   font-size: 100px;
-  font-family: 'Pacifico', cursive;
   text-align: center;
+  font-family: 'Pacifico', cursive;
 `;
 
 const Row = styled('div')`

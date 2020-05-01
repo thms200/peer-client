@@ -1,8 +1,13 @@
-import { LOGIN_USER, LOGOUT_USER } from '../constants/actionTypes';
+import {
+  LOGIN_USER,
+  LOGOUT_USER,
+  GET_CONSULTINGS,
+} from '../constants/actionTypes';
 
 const initialState = {
   isLogin: false,
   userInfo: {},
+  consultings: [],
 };
 
 export function user(state = initialState, action) {
@@ -18,6 +23,12 @@ export function user(state = initialState, action) {
         ...state,
         isLogin: false,
         userInfo: {},
+        consultings: [],
+      };
+    case GET_CONSULTINGS:
+      return {
+        ...state,
+        consultings: action.consultings,
       };
     default:
       return state;

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { loginUser, setLoading } from '../actions';
-import { message } from '../constants/message';
+import { alertMsg } from '../constants/message';
 
 export const logInFacebook = async(dispatch, response) => {
   try {
@@ -22,7 +22,7 @@ export const logInFacebook = async(dispatch, response) => {
         dispatch(setLoading(false));
       });
   } catch (err) {
-    alert(message.invalidLogin);
+    alert(alertMsg.invalidLogin);
     console.warn(err);
   }
 };
@@ -53,13 +53,14 @@ export const getAuth = async(dispatch, history) => {
   }
 };
 
-export const saveAudio = async(blob, consultantId, customerName, isFinal) => {
+export const saveAudio = async(blob, consultantId, customerName, isFinal, isVoice) => {
   try {
     const token = localStorage.getItem('x-access-token');
     const formdata = new FormData();
     formdata.append('audio', blob, customerName);
-    formdata.append('isFinal', isFinal);
     formdata.append('customer', customerName);
+    formdata.append('isFinal', isFinal);
+    formdata.append('isVoice', isVoice);
 
     return await axios({
       method: 'post',
@@ -75,7 +76,24 @@ export const saveAudio = async(blob, consultantId, customerName, isFinal) => {
         if (data.result === 'ng') return alert(data.errMessage);
       });
   } catch(err) {
-    alert(message.invalidSave);
+    alert(alertMsg.invalidSave);
+    console.warn(err);
+  }
+};
+
+export const fetchConsultings = (consultantId, customer) => {
+  try {
+    const token = localStorage.getItem('x-access-token');
+    return axios({
+      method: 'get',
+      url: `${process.env.REACT_APP_API_URL}/api/users/${consultantId}/consultings?customer=${customer}`,
+      headers: {
+        'Content-Type': 'application/json',
+        'x-access-token': token
+      },
+    });
+  } catch(err) {
+    alert(alertMsg.invalidConsulting);
     console.warn(err);
   }
 };

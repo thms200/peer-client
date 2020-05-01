@@ -10,12 +10,13 @@ import InstallContainer from './InstallContainer';
 import DemoContainer from './DemoContainer';
 import { logoutUser, setLoading } from '../actions';
 import { logInFacebook, getAuth } from '../utils/api';
-import { message } from '../constants/message';
+import { alertMsg } from '../constants/message';
 
 const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
     font-family: 'Gamja Flower', cursive;
+    overflow: scroll;
   }
   a {
     text-decoration: none;
@@ -28,9 +29,9 @@ const GlobalStyle = createGlobalStyle`
     }
   }
   button {
-    font-family: 'Gamja Flower', cursive;
     cursor: pointer;
     font-size: 15px;
+    font-family: 'Gamja Flower', cursive;
     &:focus {
       outline: none;
     }
@@ -52,7 +53,7 @@ function AppContainer() {
       await logInFacebook(dispatch, response);
       history.replace(home);
     } catch(err) {
-      alert(message.invalidLogin);
+      alert(alertMsg.invalidLogin);
     }
   };
   const onLogout = () => {
@@ -79,19 +80,19 @@ function AppContainer() {
       <Switch>
         <Route
           exact
-          path={'/'}
+          path="/"
           render={() => privateRoute(MainContainer)}
         />
         <Route
-          path={'/consulting'}
+          path="/consulting"
           render={() => privateRoute(ConsultingContainer)}
         />
         <Route
-          path={'/install'}
+          path="/install"
           render={() => privateRoute(InstallContainer)}
         />
         <Route
-          path={'/demo'}
+          path="/demo"
           render={() => privateRoute(DemoContainer)}
         />
         <Route

@@ -3,13 +3,16 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-const Wrapper = styled('div')`
-  height: 10vh;
+const Wrapper = styled('header')`
+  position: fixed;
+  width: 100%;
+  height: 9vh;
+  background-color: white;
 `;
 
 const HeaderDiv = styled('div')`
   display: flex;
-  align-items: baseline;
+  align-items: flex-end;
   justify-content: space-between;
   padding: 0 10px;
 `;
@@ -30,9 +33,9 @@ const HeaderLi = styled('li')`
 const Titile = styled('h1')`
   display: flex;
   align-items: center;
-  font-family: 'Pacifico', cursive;
+  margin: 0px;
   font-size: 40px;
-  margin: 0;
+  font-family: 'Pacifico', cursive;
 `;
 
 const TitleImg = styled('img')`

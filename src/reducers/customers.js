@@ -1,26 +1,26 @@
 import {
-  GET_CUSTOMERS,
-  INITIAL_CUSTOMERS,
+  GET_WAITING_CUSTOMERS,
+  INITIAL_WAITING_CUSTOMERS,
   GET_CURRENT_CUSTOMER,
   INITIAL_CURRENT_CUSTOMER,
 } from '../constants/actionTypes';
 
 const initialState = {
-  customers: [],
+  waitingCustomers: [],
   currentCustomer: '',
 };
 
 export function customers(state = initialState, action) {
   switch (action.type) {
-    case GET_CUSTOMERS:
+    case GET_WAITING_CUSTOMERS:
       return {
         ...state,
-        customers: action.customers,
+        waitingCustomers: action.customers,
       };
-    case INITIAL_CUSTOMERS:
+    case INITIAL_WAITING_CUSTOMERS:
       return {
         ...state,
-        customers: [],
+        waitingCustomers: [],
       };
     case GET_CURRENT_CUSTOMER:
       return {

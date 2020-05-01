@@ -9,10 +9,6 @@ const LoaderDiv = styled('div')`
   height: 100%;
   background-color: black;
   z-index: 3;
-  color: white;
-  font-size: 50px;
-  text-align: center;
-  font-family: 'Baloo Tammudu 2', cursive;
 `;
 
 export default function Loader() {

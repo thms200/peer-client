@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { FaRegIdBadge, FaRegLaughWink, FaSlideshare, FaHeadset } from 'react-icons/fa';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { FaRegIdBadge, FaRegLaughWink, FaSlideshare, FaHeadset } from 'react-icons/fa';
 import { alertMsg } from '../constants/message';
 
 const Section = styled('section')`
@@ -10,15 +10,16 @@ const Section = styled('section')`
   align-items: center;
   justify-content: center;
   width: 70%;
+  margin-top: 9vh;
 `;
 
 const VideoWrapper = styled('div')`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 10px;
   width: 500px;
   height: 281px;
+  margin: 10px;
   border-radius: 10px;
   box-shadow: 2px 2px 5px 0px;
   background-color: white;
@@ -43,13 +44,15 @@ const ButtonWrapper = styled('div')`
 `;
 
 const Button = styled('button')`
+  width: 100px;
   margin: 10px;
   border-radius: 10px;
-  width: 100px;
+  border-style: none;
   color: white;
+  box-shadow: 2px 2px 5px 0px black;
   background-color: ${props => {
-    if (props.activeOn || props.activeStart) return 'black';
-    else return 'rgb(105, 115, 251)';
+    if (props.activeOn || props.activeStart) return 'rgb(105, 115, 251)';
+    else return '#7b7979';
   }};
   &:hover {
     cursor: pointer;
@@ -74,6 +77,7 @@ export default function CameraScreen({
   onEndConsulting,
   consultantStream,
   customerStream,
+  consultantName,
   customers,
   customerName,
   isVoice
@@ -122,7 +126,7 @@ export default function CameraScreen({
   return (
     <Section>
       <div>
-        <H1Text><FaRegIdBadge size={21}/>Brand</H1Text>
+        <H1Text><FaRegIdBadge size={21}/>{consultantName}님의 화면</H1Text>
         <VideoWrapper>
           {isVoice && <FaHeadset size={150} color={'rgb(105, 115, 251)'} />}
           <Video
@@ -135,7 +139,7 @@ export default function CameraScreen({
       </div>
       <div>
         {customerName
-          ? <H1Text><FaRegLaughWink size={20} /> {customerName}님</H1Text>
+          ? <H1Text><FaRegLaughWink size={20} />{customerName}님의 화면</H1Text>
           : <H1Text><FaSlideshare size={20} />상담을 시작하세요.</H1Text>
         }
         <VideoWrapper>
@@ -175,6 +179,7 @@ CameraScreen.prototype = {
     PropTypes.string,
     PropTypes.object,
   ]).isRequired,
+  consultantName: PropTypes.string.isRequired,
   customers: PropTypes.array.isRequired,
   customerName: PropTypes.string.isRequired,
   isVoice: PropTypes.bool.isRequired,

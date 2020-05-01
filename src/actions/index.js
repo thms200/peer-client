@@ -60,16 +60,16 @@ export function initialStream() {
   };
 }
 
-export function getCustomers(customers) {
+export function getWaitingCustomers(customers) {
   return {
-    type: types.GET_CUSTOMERS,
+    type: types.GET_WAITING_CUSTOMERS,
     customers,
   };
 }
 
-export function initialCustomers() {
+export function initialWaitingCustomers() {
   return {
-    type: types.INITIAL_CUSTOMERS,
+    type: types.INITIAL_WAITING_CUSTOMERS,
   };
 }
 
@@ -83,5 +83,12 @@ export function getCurrentCustomer(customer) {
 export function initialCurrentCustomer() {
   return {
     type: types.INITIAL_CURRENT_CUSTOMER,
+  };
+}
+
+export function getConsultings(consultings) {
+  return {
+    type: types.GET_CONSULTINGS,
+    consultings,
   };
 }
