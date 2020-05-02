@@ -7,9 +7,9 @@ const Wrapper = styled('aside')`
   display: flex;
   align-items: center;
   flex-direction: column;
-  width: 30%;
-  height: 91vh;
+  width: 15%;
   margin-top: 9vh;
+  padding: 0 5px;
   border-right: 1px solid grey;
   overflow-y: auto;
 `;
@@ -19,43 +19,47 @@ const CustomerBox = styled('div')`
   align-items: center;
   justify-content: center;
   width: 80%;
-  margin: 10px;
+  margin: 5px 5%;
   padding: 10px;
-  border-radius: 10px;
-  color: white;
-  font-size: 25px;
+  border-bottom: 1px solid #a8a5a5;
+  font-size: 15px;
   text-align: center;
-  box-shadow: 2px 2px 5px 0px black;
-  background-color: rgb(105, 115, 251);
   ${props => {
     if (props.isHome) {
-      return '&:hover{ cursor: pointer; background-color: black; text-decoration: underline; }';
+      return '&:hover{ cursor: pointer; background-color: black; text-decoration: underline; border-radius: 10px; color: white; }';
     }
   }}
 `;
 
-const AsideH1 = styled('h1')`
+const AsideH2 = styled('h2')`
   align-self: baseline;
-  margin: 5px 20px;
+  margin: 20px 20px 5px;
+  font-family: 'Gamja Flower', cursive;
 `;
 
 const InfoWrapper = styled('div')`
   display: flex;
+  align-items: center;
   align-self: baseline;
   width: 100%;
+  height: 34px;
+  margin-bottom: 15px;
 `;
 
 const InfoDiv = styled('div')`
-  margin: 1px 20px;
+  margin: 1px 10px 0 20px;
   color: grey;
   font-size: 14px;
+  font-family: 'Gamja Flower', cursive;
 `;
 
 const AllButton = styled('button')`
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   border-style: none;
   color: white;
-  background-color: #a9a6a6;
+  background-color: black;
 `;
 
 export default function Aside({ customers, onClick, page, title, consultant }) {
@@ -84,7 +88,7 @@ export default function Aside({ customers, onClick, page, title, consultant }) {
 
   return (
     <Wrapper>
-      <AsideH1>{title}</AsideH1>
+      <AsideH2>{title}</AsideH2>
       {makeInfoDiv(isHome)}
       {customers && customers.map((customer) => {
         const customerName = customer.nickname;
