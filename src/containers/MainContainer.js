@@ -17,13 +17,19 @@ export default function MainContainer() {
   const dispatch = useDispatch();
   const consultant = useSelector(({ user: { userInfo: { id } } }) => id);
   const consultings = useSelector(({ user: { consultings } }) => consultings);
+
   const onGetConsultings = async(consultant, customer) => {
-    setIsLoading(true);
-    const consultings = await fetchConsultings(consultant, customer);
-    const historyCustomers = getHistoryCustomers(consultings.data);
-    dispatch(getConsultings(consultings.data));
-    setHistoryCustomers(historyCustomers);
-    setIsLoading(false);
+    try {
+      const token = localStorage.getItem('x-access-token');
+      setIsLoading(true);
+      const consultings = await fetchConsultings(token, consultant, customer);
+      const historyCustomers = getHistoryCustomers(consultings.data);
+      dispatch(getConsultings(consultings.data));
+      setHistoryCustomers(historyCustomers);
+      setIsLoading(false);
+    } catch(err) {
+      alert(err.response.data.errMessage);
+    }
   };
 
   useEffect(() => {
