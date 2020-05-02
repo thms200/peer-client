@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { FaRegIdBadge, FaRegLaughWink, FaSlideshare, FaHeadset } from 'react-icons/fa';
-import { alertMsg } from '../constants/message';
+import { MESSAGE } from '../constants/message';
 
 const Section = styled('section')`
   display: flex;
@@ -99,29 +99,29 @@ export default function CameraScreen({
   }, [customerStream]);
 
   const handleOnConsultant = () => {
-    if (activeOn) return alert(alertMsg.alreadyOn);
+    if (activeOn) return alert(MESSAGE.ALREADY_ON);
     setActiveOn(true);
     onConsultant();
   };
 
   const handleOffConsultant = () => {
-    if (!activeOn) return alert(alertMsg.invalidOn);
-    if (activeStart) return alert(alertMsg.invalidOff);
+    if (!activeOn) return alert(MESSAGE.INVALID_ON);
+    if (activeStart) return alert(MESSAGE.INVALID_OFF);
     setActiveOn(false);
     offConsultant();
   };
 
   const handleStartConsulting = async() => {
-    if (!activeOn) return alert(alertMsg.invalidOn);
-    if (activeStart) return alert(alertMsg.alreadyStart);
-    if (!customers.length) return alert(alertMsg.noCustomer);
+    if (!activeOn) return alert(MESSAGE.INVALID_ON);
+    if (activeStart) return alert(MESSAGE.INVALID_START);
+    if (!customers.length) return alert(MESSAGE.NO_CUSTOMER);
     setActiveStart(true);
     onStartConsulting();
   };
 
   const handleEndConsulting = () => {
-    if (!activeOn) return alert(alertMsg.invalidOn);
-    if (!activeStart) return alert(alertMsg.invalidStart);
+    if (!activeOn) return alert(MESSAGE.INVALID_ON);
+    if (!activeStart) return alert(MESSAGE.INVALID_START);
     setActiveStart(false);
     onEndConsulting();
   };
