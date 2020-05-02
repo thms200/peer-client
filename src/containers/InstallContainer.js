@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import Code from '../components/Code';
+import { makeCode } from '../utils';
 
 const Wrapper = styled('div')`
   display: flex;
@@ -10,12 +10,9 @@ const Wrapper = styled('div')`
   align-items: center;
 `;
 
-const InstallTitleWrapper = styled('div')`
+const TitleWrapper = styled('div')`
   margin-top: 10%;
   text-align: center;
-`;
-
-const InstallTitle = styled('h1')`
 `;
 
 const CodeWrapper = styled('div')`
@@ -35,16 +32,20 @@ const InstallInfo = styled('div')`
 export default function InstallContainer() {
   const consultantId = useSelector(({ user: { userInfo: { id } } }) => id);
   const consultantName = useSelector(({ user: { userInfo: { name } } }) => name);
+  const code = makeCode(consultantId, consultantName);
+
   return (
     <Wrapper>
-      <InstallTitleWrapper>
-        <InstallTitle>이제 사이트에 상담 버튼만 설치하면,</InstallTitle>
-        <InstallTitle>고객들과 쉽게 상담을 시작할 수 있습니다.</InstallTitle>
-      </InstallTitleWrapper>
+      <TitleWrapper>
+        <h1>이제 사이트에 상담 버튼만 설치하면,</h1>
+        <h1>고객들과 쉽게 상담을 시작할 수 있습니다.</h1>
+      </TitleWrapper>
       <CodeWrapper>
-        <Code consultantId={consultantId} consultantName={consultantName}/>
+        <pre>{code}</pre>
       </CodeWrapper>
-      <InstallInfo>코드를 홈페이지의  &lt;head&gt; 태그와 &lt;body&gt; 태그에 복붙하시면 설치가 완료됩니다.</InstallInfo>
+      <InstallInfo>
+        코드를 홈페이지의  &lt;head&gt; 태그와 &lt;body&gt; 태그에 복사/붙여넣기 하시면 설치가 완료됩니다.
+      </InstallInfo>
     </Wrapper>
   );
 }
