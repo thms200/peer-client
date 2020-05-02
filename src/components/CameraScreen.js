@@ -6,13 +6,12 @@ import { alertMsg } from '../constants/message';
 
 const Section = styled('section')`
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  justify-content: space-around;
   width: 85%;
   height: 91vh;
   margin-top: 9vh;
-  padding: 5px;
+  padding: 20px;
+  border-left: 1px solid #c1c0c0;
 `;
 
 const SreenWrapper = styled('div')`
@@ -44,10 +43,7 @@ const Video = styled('video')`
 `;
 
 const ButtonWrapper = styled('div')`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  margin: 10px;
+  text-align: center;
 `;
 
 const Button = styled('button')`
@@ -132,52 +128,52 @@ export default function CameraScreen({
 
   return (
     <Section>
-      <SreenWrapper>
-        <H3Text>
-          <FaRegIdBadge size={21} style={{ margin: '5px' }} />
-          {consultantName}
-        </H3Text>
-        <VideoWrapper>
-          {isVoice && <FaHeadset size={150} />}
-          <Video
-            playsInline
-            autoPlay
-            ref={consultantRef}
-            isVoice={isVoice}
-          />
-        </VideoWrapper>
-      </SreenWrapper>
-      <SreenWrapper>
-        {customerName
-          ? (<H3Text>
-            <FaRegLaughWink size={20} style={{ margin: '5px' }} />
-            {customerName}
-          </H3Text>
-          ) : (<H3Text>
-            <FaSlideshare size={20} style={{ margin: '5px' }} />
-            상담을 시작하세요.
-          </H3Text>
-          )
-        }
-        <VideoWrapper>
-          {isVoice && <FaHeadset size={150} />}
-          <Video
-            playsInline
-            autoPlay
-            ref={customerRef}
-            isVoice={isVoice}
-          />
-        </VideoWrapper>
-      </SreenWrapper>
       <ButtonWrapper>
-        <div>
-          <Button activeOn={activeOn} onClick={handleOnConsultant}>On</Button>
-          <Button onClick={handleOffConsultant}>Off</Button>
-        </div>
-        <div>
-          <Button activeStart={activeStart} onClick={handleStartConsulting}>Start</Button>
-          <Button onClick={handleEndConsulting}>End</Button>
-        </div>
+        <Button activeOn={activeOn} onClick={handleOnConsultant}>On</Button>
+        <Button onClick={handleOffConsultant}>Off</Button>
+      </ButtonWrapper>
+      <div>
+        <SreenWrapper>
+          <H3Text>
+            <FaRegIdBadge size={21} style={{ margin: '5px' }} />
+            {consultantName}
+          </H3Text>
+          <VideoWrapper>
+            {isVoice && <FaHeadset size={150} />}
+            <Video
+              playsInline
+              autoPlay
+              ref={consultantRef}
+              isVoice={isVoice}
+            />
+          </VideoWrapper>
+        </SreenWrapper>
+        <SreenWrapper>
+          {customerName
+            ? (<H3Text>
+              <FaRegLaughWink size={20} style={{ margin: '5px' }} />
+              {customerName}
+            </H3Text>
+            ) : (<H3Text>
+              <FaSlideshare size={20} style={{ margin: '5px' }} />
+              상담을 시작하세요.
+            </H3Text>
+            )
+          }
+          <VideoWrapper>
+            {isVoice && <FaHeadset size={150} />}
+            <Video
+              playsInline
+              autoPlay
+              ref={customerRef}
+              isVoice={isVoice}
+            />
+          </VideoWrapper>
+        </SreenWrapper>
+      </div>
+      <ButtonWrapper>
+        <Button activeStart={activeStart} onClick={handleStartConsulting}>Start</Button>
+        <Button onClick={handleEndConsulting}>End</Button>
       </ButtonWrapper>
     </Section>
   );
