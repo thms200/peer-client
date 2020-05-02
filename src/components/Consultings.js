@@ -18,7 +18,7 @@ const FlexWrapper = styled('div')`
 const ConsultingsBoxWrapper = styled('ul')`
   width: 28%;
   height: 170px;
-  margin: calc(16% / 6);
+  margin: 20px calc(16% / 6);
   padding: 10px;
   border-radius: 10px;
   border: 0.8px solid grey;
@@ -41,12 +41,12 @@ const ConsultingsBox = styled('li')`
 `;
 
 const ConsultingBoxName = styled('div')`
-  color: rgb(105, 115, 251);
+  color: black;
   font-size: 28px;
 `;
 
 const ConsultingBoxIcon = styled('div')`
-  width: 8%;
+  width: 20px;
   height: 25%;
   border-radius: 50%;
   padding: 5px;

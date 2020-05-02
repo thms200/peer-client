@@ -9,8 +9,14 @@ const Section = styled('section')`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 70%;
+  width: 85%;
+  height: 91vh;
   margin-top: 9vh;
+  padding: 5px;
+`;
+
+const SreenWrapper = styled('div')`
+  margin: 5px;
 `;
 
 const VideoWrapper = styled('div')`
@@ -19,7 +25,7 @@ const VideoWrapper = styled('div')`
   justify-content: center;
   width: 500px;
   height: 281px;
-  margin: 10px;
+  margin: 8px;
   border-radius: 10px;
   box-shadow: 2px 2px 5px 0px;
   background-color: white;
@@ -34,39 +40,40 @@ const Video = styled('video')`
     if (props.isVoice) return '0%';
     return '100%';
   }};
-  border-radius: 10px;
+  border-radius: 5px;
 `;
 
 const ButtonWrapper = styled('div')`
   display: flex;
   justify-content: space-between;
   width: 100%;
+  margin: 10px;
 `;
 
 const Button = styled('button')`
   width: 100px;
-  margin: 10px;
+  margin: 5px;
   border-radius: 10px;
   border-style: none;
   color: white;
   box-shadow: 2px 2px 5px 0px black;
   background-color: ${props => {
-    if (props.activeOn || props.activeStart) return 'rgb(105, 115, 251)';
+    if (props.activeOn || props.activeStart) return '#202020';
     else return '#7b7979';
   }};
   &:hover {
     cursor: pointer;
-    background-color: black;
+    background-color: #202020;
     text-decoration: underline;
   }
 `;
 
-const H1Text = styled('h1')`
+const H3Text = styled('h3')`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0;
-  color: rgb(105, 115, 251);
+  margin: 5px;
+  padding: 4px;
   text-align: center;
 `;
 
@@ -111,7 +118,7 @@ export default function CameraScreen({
   const handleStartConsulting = async() => {
     if (!activeOn) return alert(alertMsg.invalidOn);
     if (activeStart) return alert(alertMsg.alreadyStart);
-    if (!customers) return alert(alertMsg.noCustomer);
+    if (!customers.length) return alert(alertMsg.noCustomer);
     setActiveStart(true);
     onStartConsulting();
   };
@@ -125,10 +132,13 @@ export default function CameraScreen({
 
   return (
     <Section>
-      <div>
-        <H1Text><FaRegIdBadge size={21}/>{consultantName}님의 화면</H1Text>
+      <SreenWrapper>
+        <H3Text>
+          <FaRegIdBadge size={21} style={{ margin: '5px' }} />
+          {consultantName}
+        </H3Text>
         <VideoWrapper>
-          {isVoice && <FaHeadset size={150} color={'rgb(105, 115, 251)'} />}
+          {isVoice && <FaHeadset size={150} />}
           <Video
             playsInline
             autoPlay
@@ -136,14 +146,21 @@ export default function CameraScreen({
             isVoice={isVoice}
           />
         </VideoWrapper>
-      </div>
-      <div>
+      </SreenWrapper>
+      <SreenWrapper>
         {customerName
-          ? <H1Text><FaRegLaughWink size={20} />{customerName}님의 화면</H1Text>
-          : <H1Text><FaSlideshare size={20} />상담을 시작하세요.</H1Text>
+          ? (<H3Text>
+            <FaRegLaughWink size={20} style={{ margin: '5px' }} />
+            {customerName}
+          </H3Text>
+          ) : (<H3Text>
+            <FaSlideshare size={20} style={{ margin: '5px' }} />
+            상담을 시작하세요.
+          </H3Text>
+          )
         }
         <VideoWrapper>
-          {isVoice && <FaHeadset size={150} color={'rgb(105, 115, 251)'} />}
+          {isVoice && <FaHeadset size={150} />}
           <Video
             playsInline
             autoPlay
@@ -151,7 +168,7 @@ export default function CameraScreen({
             isVoice={isVoice}
           />
         </VideoWrapper>
-      </div>
+      </SreenWrapper>
       <ButtonWrapper>
         <div>
           <Button activeOn={activeOn} onClick={handleOnConsultant}>On</Button>
