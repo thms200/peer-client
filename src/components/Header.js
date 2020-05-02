@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
@@ -7,7 +7,7 @@ const Wrapper = styled('header')`
   position: fixed;
   width: 100%;
   height: 9vh;
-  background-color: white;
+  background-color: #202020;
 `;
 
 const HeaderDiv = styled('div')`
@@ -27,7 +27,17 @@ const HeaderUi = styled('ul')`
 
 const HeaderLi = styled('li')`
   margin: 0 8px;
-  font-size: 25px;
+  font-size: 17px;
+
+  a {
+    color: white;
+
+    &.active {
+      border-radius: 10px;
+      background-color: #e4dcdc;
+      color: black;
+    }
+  }
 `;
 
 const Titile = styled('h1')`
@@ -36,6 +46,7 @@ const Titile = styled('h1')`
   margin: 0px;
   font-size: 40px;
   font-family: 'Pacifico', cursive;
+  color: white;
 `;
 
 const TitleImg = styled('img')`
@@ -44,14 +55,16 @@ const TitleImg = styled('img')`
 `;
 
 const Button = styled('button')`
-  padding: 3px;
+  padding: 3px 8px;
   border: none;
-  font-size: 23px;
+  font-size: 17px;
+  color: white;
   background-color: transparent;
 
   &:hover {
     border-radius: 10px;
     background-color: #e4dcdc;
+    color: black;
   }
 `;
 
@@ -75,10 +88,10 @@ export default function Header({ onClick, userInfo }) {
         </Titile>
         <nav>
           <HeaderUi>
-            <HeaderLi><Link to="/">Home</Link></HeaderLi>
-            <HeaderLi><Link to="/consulting">Consulting</Link></HeaderLi>
-            <HeaderLi><Link to="/install">Install</Link></HeaderLi>
-            <HeaderLi><Link to="/demo">Demo</Link></HeaderLi>
+            <HeaderLi><NavLink exact to="/">Home</NavLink></HeaderLi>
+            <HeaderLi><NavLink to="/consulting">Consulting</NavLink></HeaderLi>
+            <HeaderLi><NavLink to="/install">Install</NavLink></HeaderLi>
+            <HeaderLi><NavLink to="/demo">Demo</NavLink></HeaderLi>
             <HeaderLi><Button onClick={onClick}>Logout</Button></HeaderLi>
             <HeaderLi><UserPhoto src={userInfo.picture} /></HeaderLi>
           </HeaderUi>

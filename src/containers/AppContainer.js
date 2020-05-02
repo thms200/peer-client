@@ -15,23 +15,25 @@ import { alertMsg } from '../constants/message';
 const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
-    font-family: 'Gamja Flower', cursive;
+    font-family: 'PT Sans', sans-serif;
     overflow: scroll;
+    background-color: #ededed;
   }
   a {
     text-decoration: none;
     color: black;
-    padding: 3px;
+    padding: 3px 8px;
 
     &:hover {
       border-radius: 10px;
       background-color: #e4dcdc;
+      color: black;
     }
   }
   button {
     cursor: pointer;
     font-size: 15px;
-    font-family: 'Gamja Flower', cursive;
+    font-family: 'PT Sans', sans-serif;
     &:focus {
       outline: none;
     }
@@ -52,7 +54,7 @@ function AppContainer() {
     try {
       await logInFacebook(dispatch, response);
       history.replace(home);
-    } catch(err) {
+    } catch (err) {
       alert(alertMsg.invalidLogin);
     }
   };

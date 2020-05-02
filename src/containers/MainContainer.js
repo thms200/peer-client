@@ -13,14 +13,17 @@ const Wrapper = styled('div')`
 
 export default function MainContainer() {
   const [historyCustomers, setHistoryCustomers] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const consultant = useSelector(({ user: { userInfo: { id } } }) => id);
   const consultings = useSelector(({ user: { consultings } }) => consultings);
   const onGetConsultings = async(consultant, customer) => {
+    setIsLoading(true);
     const consultings = await fetchConsultings(consultant, customer);
     const historyCustomers = getHistoryCustomers(consultings.data);
     dispatch(getConsultings(consultings.data));
     setHistoryCustomers(historyCustomers);
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -36,7 +39,7 @@ export default function MainContainer() {
         title="History"
         consultant={consultant}
       />
-      <Consultings consultings={consultings} />
+      <Consultings consultings={consultings} isLoading={isLoading} />
     </Wrapper>
   );
 }

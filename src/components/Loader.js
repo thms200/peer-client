@@ -7,12 +7,18 @@ const LoaderDiv = styled('div')`
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: black;
   z-index: 3;
+  line-height: 99vh;
+  color: white;
+  font-size: 70px;
+  text-align: center;
+  background-color: black;
 `;
 
 export default function Loader() {
   return (
-    <LoaderDiv />
+    <LoaderDiv>
+      Welcome!
+    </LoaderDiv>
   );
 }
