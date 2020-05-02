@@ -9,6 +9,15 @@ const Wrapper = styled('section')`
   margin-top: 9vh;
 `;
 
+const Loading = styled('div')`
+  width: 85%;
+  height: 91vh;
+  margin-top: 9vh;
+  line-height: 90vh;
+  font-size: 30px;
+  text-align: center;
+`;
+
 const FlexWrapper = styled('div')`
   display: flex;
   flex-wrap: wrap;
@@ -70,7 +79,14 @@ const makeConsultingMode = (isVoice) => {
     : <ConsultingBoxIcon><FaCamera size={18} color="white" /></ConsultingBoxIcon>;
 };
 
-export default function Consultings({ consultings }) {
+export default function Consultings({ consultings, isLoading }) {
+  if (isLoading) {
+    return (
+      <Loading>
+        Loading...
+      </Loading>
+    );
+  }
   return (
     <Wrapper>
       <FlexWrapper>
@@ -97,5 +113,6 @@ export default function Consultings({ consultings }) {
 
 Consultings.prototype = {
   consultings: PropTypes.array.isRequired,
+  isLoading: PropTypes.bool.isRequired,
 };
 
