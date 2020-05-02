@@ -16,9 +16,10 @@ export const getHistoryCustomers = (consultings) => {
 };
 
 export const makeCode = (consultantId, consultantName) => {
-  const cdnUrl = 'https://cdn.jsdelivr.net/gh/thms200/peer-bot/dist';
+  const cdnUrl = 'https://cdn.jsdelivr.net/combine';
+  const github = 'gh/thms200/peer-bot/dist';
   return `
-  <head> tag 안의 1줄(link tag), <scirpt> tag 안의 6줄(div tag, script tag)을 입력하세요!
+  <head> tag 안의 1줄(link tag), <scirpt> tag 안의 3줄(div tag, script tag)을 입력하세요!
   
   <!-- start -->
 
@@ -28,10 +29,7 @@ export const makeCode = (consultantId, consultantName) => {
   <script>
     <div class="consultant-id" id="${consultantId}"></div>
     <div class="consultant-name" id="${consultantName}"></div>
-    <script src="${cdnUrl}/peer.js"></script>
-    <script src="${cdnUrl}/2.d592cf78.chunk.js"></script>
-    <script src="${cdnUrl}/main.bcbc0849.chunk.js"></script>
-    <script src="${cdnUrl}/runtime-main.21811c53.js"></script>
+    <script src="${cdnUrl}/${github}/peer.js,${github}/2.d592cf78.chunk.js,${github}/main.bcbc0849.chunk.js,${github}/runtime-main.21811c53.js"></script>
   </script>
 
   <!-- End -->
