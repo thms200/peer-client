@@ -18,7 +18,7 @@ import {
   initialCurrentCustomer,
 } from '../actions';
 import { fetchAudio } from '../utils/api';
-import { alertMsg } from '../constants/message';
+import { MESSAGE } from '../constants/message';
 
 const Wrapper = styled('div')`
   display: flex;
@@ -79,7 +79,7 @@ export default function ConsultingContainer() {
           .getUserMedia({ audio: true, video: !isVoice });
         dispatch(connectConsultantStream(streamConsultant));
       } catch (err) {
-        alert(alertMsg.requesPermission);
+        alert(MESSAGE.REQUEST_PERMISSION);
       }
 
       const type = isVoice ? 'audio/webm' : 'video/webm';
