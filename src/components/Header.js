@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
@@ -31,6 +31,12 @@ const HeaderLi = styled('li')`
 
   a {
     color: white;
+
+    &.active {
+      border-radius: 10px;
+      background-color: #e4dcdc;
+      color: black;
+    }
   }
 `;
 
@@ -82,10 +88,10 @@ export default function Header({ onClick, userInfo }) {
         </Titile>
         <nav>
           <HeaderUi>
-            <HeaderLi><Link to="/">Home</Link></HeaderLi>
-            <HeaderLi><Link to="/consulting">Consulting</Link></HeaderLi>
-            <HeaderLi><Link to="/install">Install</Link></HeaderLi>
-            <HeaderLi><Link to="/demo">Demo</Link></HeaderLi>
+            <HeaderLi><NavLink exact to="/">Home</NavLink></HeaderLi>
+            <HeaderLi><NavLink to="/consulting">Consulting</NavLink></HeaderLi>
+            <HeaderLi><NavLink to="/install">Install</NavLink></HeaderLi>
+            <HeaderLi><NavLink to="/demo">Demo</NavLink></HeaderLi>
             <HeaderLi><Button onClick={onClick}>Logout</Button></HeaderLi>
             <HeaderLi><UserPhoto src={userInfo.picture} /></HeaderLi>
           </HeaderUi>
