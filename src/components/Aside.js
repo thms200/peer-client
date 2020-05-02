@@ -10,7 +10,6 @@ const Wrapper = styled('aside')`
   width: 15%;
   margin-top: 9vh;
   padding: 0 5px;
-  border-right: 1px solid grey;
   overflow-y: auto;
 `;
 

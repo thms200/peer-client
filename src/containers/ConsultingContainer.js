@@ -17,7 +17,7 @@ import {
   initialWaitingCustomers,
   initialCurrentCustomer,
 } from '../actions';
-import { saveAudio } from '../utils/api';
+import { fetchAudio } from '../utils/api';
 import { alertMsg } from '../constants/message';
 
 const Wrapper = styled('div')`
@@ -26,7 +26,7 @@ const Wrapper = styled('div')`
 
 export default function ConsultingContainer() {
   const dispatch = useDispatch();
-  const consultant = useSelector(({ user: { userInfo: { id } } }) => id);
+  const consultantId = useSelector(({ user: { userInfo: { id } } }) => id);
   const consultantName = useSelector(({ user: { userInfo: { name } } }) => name);
   const socket = useSelector(({ socket: { socket } }) => socket);
   const waitingCustomers = useSelector(({ customers: { waitingCustomers } }) => waitingCustomers);
@@ -37,9 +37,18 @@ export default function ConsultingContainer() {
   const [isVoice, setIsVoice] = useState(false);
   const customerName = currentCustomer.nickname;
 
+  const saveAudio = async(blob, consultantId, customerName, isFinal, isVoice) => {
+    try {
+      const token = localStorage.getItem('x-access-token');
+      await fetchAudio(blob, consultantId, customerName, isFinal, isVoice, token);
+    } catch(err) {
+      alert(err.response.data.errMessage);
+    }
+  };
+
   const onConsultant = () => {
     const initailSocket = io(process.env.REACT_APP_API_URL);
-    initailSocket.emit('onConsulting', consultant, (message) => {
+    initailSocket.emit('onConsulting', consultantId, (message) => {
       alert(message);
     });
     initailSocket.on('currentCustomers', currentCustomers => {
@@ -49,7 +58,7 @@ export default function ConsultingContainer() {
   };
 
   const offConsultant = () => {
-    socket.emit('offConsulting', consultant, (message) => {
+    socket.emit('offConsulting', consultantId, (message) => {
       alert(message);
       dispatch(initialWaitingCustomers());
       dispatch(initialSocket());
@@ -59,9 +68,9 @@ export default function ConsultingContainer() {
   };
 
   const onStartConsulting = () => {
-    socket.emit('startConsulting', consultant, async(socketData) => {
+    socket.emit('startConsulting', consultantId, async(socketData) => {
       alert(socketData.message);
-      const { nickname, mode } = socketData.customerInfo;
+      const { nickname, mode, id } = socketData.customerInfo;
       const isVoice = mode === 'Voice';
       let streamConsultant;
       try {
@@ -78,7 +87,7 @@ export default function ConsultingContainer() {
       mediaRecorder.start(60000);
       mediaRecorder.ondataavailable = (blob) => {
         const newBlob = new Blob([blob.data]);
-        saveAudio(newBlob, consultant, nickname, false, isVoice);
+        saveAudio(newBlob, consultantId, nickname, false, isVoice);
       };
       dispatch(getMediaRecorder(mediaRecorder));
 
@@ -88,9 +97,8 @@ export default function ConsultingContainer() {
         stream: streamConsultant,
       });
 
-      const customerId = socketData.customerInfo.id;
       peer.on('signal', signal => {
-        socket.emit('acceptCustomer', { signal, to: customerId });
+        socket.emit('acceptCustomer', { signal, to: id });
       });
       peer.on('stream', stream => {
         dispatch(connectCustomerStream(stream));
@@ -100,7 +108,7 @@ export default function ConsultingContainer() {
     });
   };
 
-  const onEndConsulting = async() => {
+  const onEndConsulting = () => {
     socket.emit('endConsulting', currentCustomer.nickname, (message) => {
       alert(message);
       dispatch(initialCurrentCustomer());
@@ -108,7 +116,7 @@ export default function ConsultingContainer() {
     mediaRecorder.stop();
     mediaRecorder.ondataavailable = (blob) => {
       const newBlob = new Blob([blob.data]);
-      saveAudio(newBlob, consultant, customerName, true, isVoice);
+      saveAudio(newBlob, consultantId, customerName, true, isVoice);
     };
   };
 

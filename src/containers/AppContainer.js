@@ -3,14 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import Login from '../components/Login';
-import Header from '../components/Header';
 import MainContainer from './MainContainer';
 import ConsultingContainer from './ConsultingContainer';
 import InstallContainer from './InstallContainer';
 import DemoContainer from './DemoContainer';
-import { logoutUser, setLoading } from '../actions';
+import Header from '../components/Header';
+import { loginUser, logoutUser, setLoading } from '../actions';
 import { logInFacebook, getAuth } from '../utils/api';
-import { alertMsg } from '../constants/message';
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -42,27 +41,55 @@ const GlobalStyle = createGlobalStyle`
 
 function AppContainer() {
   const dispatch = useDispatch();
-  const isLogin = useSelector(state => state.user.isLogin);
-  const isLoading = useSelector(state => state.loading.isLoading);
-  const userInfo = useSelector(({ user: { userInfo } }) => userInfo);
   const history = useHistory();
-  const home = { pathname: '/' };
+  const isLogin = useSelector(({ user: { isLogin } }) => isLogin);
+  const userInfo = useSelector(({ user: { userInfo } }) => userInfo);
+  const isLoading = useSelector(({ loading: { isLoading } }) => isLoading);
 
-  const onGetAuth = async() => await getAuth(dispatch, history);
-  const onClickLogin = () => dispatch(setLoading(true));
-  const responseFacebook = async(response) => {
-    try {
-      await logInFacebook(dispatch, response);
-      history.replace(home);
-    } catch (err) {
-      alert(alertMsg.invalidLogin);
+  const onLoginClick = () => dispatch(setLoading(true));
+
+  const handleLoginSuccess = (userInfo) => {
+    dispatch(loginUser(userInfo));
+    dispatch(setLoading(false));
+    history.replace({ pathname: '/' });
+  };
+
+  const handleLoginFailure = (message, type) => {
+    alert(message);
+    if (type === 'auth') {
+      localStorage.removeItem('x-access-token');
+      history.replace({ pathname: '/' });
     }
   };
+
+  const onGetAuth = async() => {
+    try {
+      const currentToken = localStorage.getItem('x-access-token');
+      if (!currentToken) return;
+      dispatch(setLoading(true));
+      const { data } = await getAuth(currentToken);
+      handleLoginSuccess(data.userInfo);
+    } catch(err) {
+      handleLoginFailure(err.response.data.errMessage, 'auth');
+    }
+  };
+
+  const responseFacebook = async(auth) => {
+    try {
+      const { data } = await logInFacebook(auth);
+      localStorage.setItem('x-access-token', `Bearer ${data.token}`);
+      handleLoginSuccess(data.userInfo);
+    } catch (err) {
+      handleLoginFailure(err.response.data.errMessage, 'login');
+    }
+  };
+
   const onLogout = () => {
     dispatch(logoutUser());
     localStorage.removeItem('x-access-token');
     history.replace({ pathname: '/login' });
   };
+
   const privateRoute = (Component) => {
     return isLogin ? (
       <Component />
@@ -103,7 +130,7 @@ function AppContainer() {
             return (<Login
               isLogin={isLogin}
               isLoading={isLoading}
-              onClick={onClickLogin}
+              onClick={onLoginClick}
               callback={responseFacebook}
             />
             );
