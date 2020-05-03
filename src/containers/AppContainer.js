@@ -69,7 +69,7 @@ function AppContainer() {
       dispatch(setLoading(true));
       const { data } = await getAuth(currentToken);
       handleLoginSuccess(data.userInfo);
-    } catch(err) {
+    } catch (err) {
       handleLoginFailure(err.response.data.errMessage, 'auth');
     }
   };
