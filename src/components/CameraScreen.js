@@ -114,7 +114,7 @@ export default function CameraScreen({
   const handleStartConsulting = async() => {
     if (!activeOn) return alert(MESSAGE.INVALID_ON);
     if (activeStart) return alert(MESSAGE.INVALID_START);
-    if (!customers.length) return alert(MESSAGE.NO_CUSTOMER);
+    if (!customers || !customers.length) return alert(MESSAGE.NO_CUSTOMER);
     setActiveStart(true);
     onStartConsulting();
   };
