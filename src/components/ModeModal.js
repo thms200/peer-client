@@ -92,9 +92,9 @@ const Footer = styled(Row)`
   }
 `;
 export default function ModeModal({ onToggleSelectMode, onRequestConsulting }) {
-  const handleSubmit = (e) => {
+  const onClickName = (e) => {
     e.preventDefault();
-    alert(MESSAGE.MODAL_INFO_MODE);
+    alert(MESSAGE.MODAL_INFO_NAME);
   };
 
   return (
@@ -107,7 +107,7 @@ export default function ModeModal({ onToggleSelectMode, onRequestConsulting }) {
         <div>모든 상담은 녹음(녹화)됩니다.</div>
       </Header>
       <Section>
-        <form onSubmit={handleSubmit}>
+        <form>
           <div>
             <label>Nickname</label>
             <input
@@ -122,7 +122,7 @@ export default function ModeModal({ onToggleSelectMode, onRequestConsulting }) {
               placeholder="Write your email."
             />
           </div>
-          <button>Check</button>
+          <button onClick={onClickName}>Check</button>
         </form>
       </Section>
       <Footer>
