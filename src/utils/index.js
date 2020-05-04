@@ -18,9 +18,9 @@ export const getHistoryCustomers = (consultings) => {
 export const makeCode = (consultantId, consultantName) => {
   const cdnUrl = 'https://cdn.jsdelivr.net';
   const github = 'gh/thms200/peer-bot/dist';
-  const mainHashChuck = `${github}/main.4a3276ea.chunk.js`;
+  const mainHashChuck = `${github}/main.67389550.chunk.js`;
   const mainStyleHaschChuck = `${github}/main.99441111.chunk.css`;
-  const numberHashChuck = `${github}/2.8fad4926.chunk.js`;
+  const numberHashChuck = `${github}/2.bd7b69aa.chunk.js`;
   const runtimeMainHash = `${github}/runtime-main.21811c53.js`;
 
   return `
