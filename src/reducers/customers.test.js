@@ -87,7 +87,7 @@ const initialCurrentCustomer = {
   type: 'INITIAL_CURRENT_CUSTOMER',
 };
 
-describe('<Customer Reducder>', () => {
+describe('<Customer Reducer>', () => {
   it('<GET_WAITING_CUSTOMERS>: should get current waiting customers', () => {
     const stateOne = customers(initialState, waitingCustomersActionOne);
     const stateTwo = customers(stateOne, waitingCustomersActionTwo);
