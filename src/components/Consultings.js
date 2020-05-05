@@ -9,7 +9,7 @@ const Wrapper = styled('section')`
   margin-top: 9vh;
 `;
 
-const Loading = styled('div')`
+export const Loading = styled('div')`
   width: 85%;
   height: 91vh;
   margin-top: 9vh;
@@ -49,12 +49,12 @@ const ConsultingsBox = styled('li')`
   }}
 `;
 
-const ConsultingBoxName = styled('div')`
+export const ConsultingBoxName = styled('div')`
   color: black;
   font-size: 28px;
 `;
 
-const ConsultingBoxIcon = styled('div')`
+export const ConsultingBoxIcon = styled('div')`
   width: 20px;
   height: 25%;
   border-radius: 50%;
