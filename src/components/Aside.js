@@ -92,9 +92,10 @@ export default function Aside({ customers, onClick, page, title, consultant }) {
       {customers && customers.map((customer) => {
         const customerName = customer.nickname;
         const isVoice = customer.mode === 'Voice';
+        const key = customer.timestamp || customer.id;
         return (
           <CustomerBox
-            key={customer.id}
+            key={key}
             isHome={isHome}
             onClick={handleClick}
           >
