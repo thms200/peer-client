@@ -10,6 +10,7 @@ import DemoContainer from './DemoContainer';
 import Header from '../components/Header';
 import { loginUser, logoutUser, setLoading } from '../actions';
 import { logInFacebook, getAuth } from '../utils/api';
+import { MESSAGE } from '../constants/message';
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -70,7 +71,9 @@ function AppContainer() {
       const { data } = await getAuth(currentToken);
       handleLoginSuccess(data.userInfo);
     } catch (err) {
-      handleLoginFailure(err.response.data.errMessage, 'auth');
+      const { response } = err;
+      if (response) return handleLoginFailure(response.data.errMessage, 'auth');
+      alert(MESSAGE.GENERAL_ERROR);
     }
   };
 
@@ -80,7 +83,9 @@ function AppContainer() {
       localStorage.setItem('x-access-token', `Bearer ${data.token}`);
       handleLoginSuccess(data.userInfo);
     } catch (err) {
-      handleLoginFailure(err.response.data.errMessage, 'login');
+      const { response } = err;
+      if (response) return handleLoginFailure(err.response.data.errMessage, 'login');
+      alert(MESSAGE.GENERAL_ERROR);
     }
   };
 

@@ -51,7 +51,7 @@ export default function ConsultingContainer() {
       const token = localStorage.getItem('x-access-token');
       await fetchAudio(blob, consultantId, customerName, isFinal, isVoice, token);
     } catch (err) {
-      alert(err.response.data.errMessage);
+      if (err.response) alert(err.response.data.errMessage);
     }
   };
 

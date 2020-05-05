@@ -8,5 +8,6 @@ export const MESSAGE = {
   REQUEST_PERMISSION: '카메라와 마이크 접근 권한을 허락해주세요!',
   MODAL_INFO_NAME: '고객이 입력한 이름과 이메일이 유효한지 확인합니다.',
   MODAL_INFO_MODE: '고객이 원하는 상담 모드에 맞춰 상담이 연결됩니다.',
-  MODAL_INFO_END: '상담 완료 후 종료하면 상담연결도 함께 종료됩니다.'
+  MODAL_INFO_END: '상담 완료 후 종료하면 상담연결도 함께 종료됩니다.',
+  GENERAL_ERROR: '알 수 없는 이우로 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',
 };
