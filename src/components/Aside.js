@@ -13,7 +13,7 @@ const Wrapper = styled('aside')`
   overflow-y: auto;
 `;
 
-const CustomerBox = styled('div')`
+export const CustomerBox = styled('div')`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -45,14 +45,14 @@ const InfoWrapper = styled('div')`
   margin-bottom: 15px;
 `;
 
-const InfoDiv = styled('div')`
+export const InfoDiv = styled('div')`
   margin: 1px 10px 0 20px;
   color: grey;
   font-size: 14px;
   font-family: 'Gamja Flower', cursive;
 `;
 
-const AllButton = styled('button')`
+export const AllButton = styled('button')`
   width: 34px;
   height: 34px;
   border-radius: 50%;

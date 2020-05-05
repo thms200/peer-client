@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import Aside from './Aside';
+import Aside, { CustomerBox, InfoDiv, AllButton } from './Aside';
 
 const mockWaitingCustomers = [
   {
@@ -50,15 +50,15 @@ describe('<Aside>', () => {
 
     it('should be a suitable message on the main container.', () => {
       expect(asideMain.find('h2').text()).toBe('History');
-      expect(asideMain.find('[className="sc-AxhUy gafbfX"]').text()).toBe('Select your custmer!');
+      expect(asideMain.find(InfoDiv).text()).toBe('Select your custmer!');
     });
 
     it('should show all button if cusotmer name click', () => {
-      expect(asideMain.find('[className="sc-AxgMl kyXOZM"]').length).toBe(0);
+      expect(asideMain.find(AllButton).length).toBe(0);
 
-      asideMain.find('[className="sc-AxirZ greCUl"]').at(0).simulate('click');
-      expect(asideMain.find('[className="sc-AxgMl kyXOZM"]').length).toBe(1);
-      expect(asideMain.find('[className="sc-AxgMl kyXOZM"]').text()).toBe('all');
+      asideMain.find(CustomerBox).at(0).simulate('click');
+      expect(asideMain.find(AllButton).length).toBe(1);
+      expect(asideMain.find(AllButton).text()).toBe('all');
     });
   });
 
@@ -73,8 +73,7 @@ describe('<Aside>', () => {
 
     it('should be a suitable message on the consulting container.', () => {
       expect(asideConsulting.find('h2').text()).toBe('Waiting Customer');
-      expect(asideConsulting.find('[className="sc-AxhUy gafbfX"]').text())
-        .toBe('The customer is waiting for you!');
+      expect(asideConsulting.find(InfoDiv).text()).toBe('The customer is waiting for you!');
     });
   });
 });
