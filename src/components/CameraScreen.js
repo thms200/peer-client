@@ -143,6 +143,7 @@ export default function CameraScreen({
             <Video
               playsInline
               autoPlay
+              muted
               ref={consultantRef}
               isVoice={isVoice}
             />
