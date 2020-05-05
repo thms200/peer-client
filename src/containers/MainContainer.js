@@ -28,7 +28,7 @@ export default function MainContainer() {
       setHistoryCustomers(historyCustomers);
       setIsLoading(false);
     } catch(err) {
-      alert(err.response.data.errMessage);
+      if (err.response) alert(err.response.data.errMessage);
     }
   };
 

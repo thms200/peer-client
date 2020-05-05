@@ -51,7 +51,7 @@ export default function ConsultingContainer() {
       const token = localStorage.getItem('x-access-token');
       await fetchAudio(blob, consultantId, customerName, isFinal, isVoice, token);
     } catch (err) {
-      alert(err.response.data.errMessage);
+      if (err.response) alert(err.response.data.errMessage);
     }
   };
 
@@ -109,7 +109,7 @@ export default function ConsultingContainer() {
 
         const type = isVoice ? 'audio/webm' : 'video/webm';
         const mediaRecorder = new MediaRecorder(newStream, { mimeType: type });
-        mediaRecorder.start(4000);
+        mediaRecorder.start(75000);
         mediaRecorder.ondataavailable = (blob) => {
           const newBlob = new Blob([blob.data]);
           saveAudio(newBlob, consultantId, nickname, false, isVoice);
