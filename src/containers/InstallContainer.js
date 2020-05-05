@@ -11,13 +11,13 @@ const Wrapper = styled('div')`
 `;
 
 const TitleWrapper = styled('div')`
-  margin-top: 10%;
+  margin-top: 12%;
   text-align: center;
 `;
 
 const CodeWrapper = styled('div')`
   width: 50%;
-  height: 38%;
+  height: 30%;
   border-radius: 10px;
   border: 1px solid grey;
   overflow: scroll;
@@ -40,11 +40,14 @@ export default function InstallContainer() {
         <h1>이제 사이트에 상담 버튼만 설치하면,</h1>
         <h1>고객들과 쉽게 상담을 시작할 수 있습니다.</h1>
       </TitleWrapper>
+      <InstallInfo>
+        코드를 홈페이지의  &lt;body&gt; 태그에 복사/붙여넣기 하시면 설치가 완료됩니다.
+      </InstallInfo>
       <CodeWrapper>
         <pre>{code}</pre>
       </CodeWrapper>
       <InstallInfo>
-        코드를 홈페이지의  &lt;head&gt; 태그와 &lt;body&gt; 태그에 복사/붙여넣기 하시면 설치가 완료됩니다.
+        &lt;div&gt;태그 2줄과 &lt;script&gt; 태그를 운영하고 계신 홈페이지 &lt;body&gt; 태그 안에 입력하세요!
       </InstallInfo>
     </Wrapper>
   );
