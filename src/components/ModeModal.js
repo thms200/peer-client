@@ -17,7 +17,7 @@ const ModalWrapper = styled('div')`
   background-color: rgb(79, 91, 255);
 `;
 
-const CloseButton = styled('button')`
+export const CloseButton = styled('button')`
   float: right;
   border: none;
 `;

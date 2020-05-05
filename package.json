@@ -21,6 +21,7 @@
     "enzyme-adapter-react-16": "^1.15.2",
     "prop-types": "^15.7.2",
     "react-scripts": "3.4.1",
+    "react-test-renderer": "^16.13.1",
     "redux-logger": "^3.0.6"
   },
   "scripts": {

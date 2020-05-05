@@ -25,7 +25,7 @@ const HeaderUi = styled('ul')`
   padding: 0;
 `;
 
-const HeaderLi = styled('li')`
+export const HeaderLi = styled('li')`
   margin: 0 8px;
   font-size: 17px;
 

@@ -19,7 +19,7 @@ const Wrapper = styled('div')`
   }
 `;
 
-const Close = styled('button')`
+export const Close = styled('button')`
   padding-top: 8px;
   margin-left: 664px;
   border: none;

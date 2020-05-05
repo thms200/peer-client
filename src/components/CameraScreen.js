@@ -46,7 +46,7 @@ const ButtonWrapper = styled('div')`
   text-align: center;
 `;
 
-const Button = styled('button')`
+export const Button = styled('button')`
   width: 100px;
   margin: 5px;
   border-radius: 10px;
