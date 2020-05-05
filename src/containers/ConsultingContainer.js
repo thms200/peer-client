@@ -37,11 +37,20 @@ export default function ConsultingContainer() {
   const [isVoice, setIsVoice] = useState(false);
   const customerName = currentCustomer.nickname;
 
+  const mixAudio = (audioContext, streams) => {
+    const destination = audioContext.createMediaStreamDestination();
+    streams.forEach(stream => {
+      const source = audioContext.createMediaStreamSource(stream);
+      source.connect(destination);
+    });
+    return destination.stream.getAudioTracks()[0];
+  };
+
   const saveAudio = async(blob, consultantId, customerName, isFinal, isVoice) => {
     try {
       const token = localStorage.getItem('x-access-token');
       await fetchAudio(blob, consultantId, customerName, isFinal, isVoice, token);
-    } catch(err) {
+    } catch (err) {
       alert(err.response.data.errMessage);
     }
   };
@@ -82,15 +91,6 @@ export default function ConsultingContainer() {
         alert(MESSAGE.REQUEST_PERMISSION);
       }
 
-      const type = isVoice ? 'audio/webm' : 'video/webm';
-      const mediaRecorder = new MediaRecorder(streamConsultant, { mimeType: type });
-      mediaRecorder.start(60000);
-      mediaRecorder.ondataavailable = (blob) => {
-        const newBlob = new Blob([blob.data]);
-        saveAudio(newBlob, consultantId, nickname, false, isVoice);
-      };
-      dispatch(getMediaRecorder(mediaRecorder));
-
       const peer = new Peer({
         initiator: false,
         trickle: false,
@@ -101,6 +101,20 @@ export default function ConsultingContainer() {
         socket.emit('acceptCustomer', { signal, to: id });
       });
       peer.on('stream', stream => {
+        const context = new AudioContext();
+        const streams = [stream, streamConsultant];
+        const mergedStream = mixAudio(context, streams);
+        const newStream = new MediaStream();
+        newStream.addTrack(mergedStream);
+
+        const type = isVoice ? 'audio/webm' : 'video/webm';
+        const mediaRecorder = new MediaRecorder(newStream, { mimeType: type });
+        mediaRecorder.start(4000);
+        mediaRecorder.ondataavailable = (blob) => {
+          const newBlob = new Blob([blob.data]);
+          saveAudio(newBlob, consultantId, nickname, false, isVoice);
+        };
+        dispatch(getMediaRecorder(mediaRecorder));
         dispatch(connectCustomerStream(stream));
       });
       peer.signal(socketData.customerInfo.signal);
