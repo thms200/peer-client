@@ -109,7 +109,7 @@ export default function ConsultingContainer() {
 
         const type = isVoice ? 'audio/webm' : 'video/webm';
         const mediaRecorder = new MediaRecorder(newStream, { mimeType: type });
-        mediaRecorder.start(4000);
+        mediaRecorder.start(75000);
         mediaRecorder.ondataavailable = (blob) => {
           const newBlob = new Blob([blob.data]);
           saveAudio(newBlob, consultantId, nickname, false, isVoice);
