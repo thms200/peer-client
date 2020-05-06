@@ -8,7 +8,7 @@ const Section = styled('section')`
   display: flex;
   justify-content: space-around;
   width: 85%;
-  height: 91vh;
+  height: 86vh;
   margin-top: 9vh;
   padding: 20px;
   border-left: 1px solid #c1c0c0;

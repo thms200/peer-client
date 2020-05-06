@@ -6,8 +6,9 @@ import PropTypes from 'prop-types';
 const Wrapper = styled('header')`
   position: fixed;
   width: 100%;
-  height: 9vh;
+  height: 70px;
   background-color: #202020;
+  z-index: 4;
 `;
 
 const HeaderDiv = styled('div')`
@@ -74,10 +75,6 @@ const UserPhoto = styled('img')`
   border-radius: 50%;
 `;
 
-const HeaderHr = styled('hr')`
-  margin: 2px;
-`;
-
 export default function Header({ onClick, userInfo }) {
   return (
     <Wrapper>
@@ -97,7 +94,6 @@ export default function Header({ onClick, userInfo }) {
           </HeaderUi>
         </nav>
       </HeaderDiv>
-      <HeaderHr />
     </Wrapper>
   );
 }
