@@ -6,22 +6,18 @@ import { MESSAGE } from '../constants/message';
 
 const Wrapper = styled('div')`
   position: absolute;
-  left: calc(50% - 200px);
-  top: 55px;
+  left: calc(50% - 100px);
+  top: 125px;
   border-radius: 10px;
-  width: 700px;
-  height: 720px;
+  width: 600px;
+  height: 620px;
   box-shadow: 0 0 10px;
   background-color: rgb(79, 91, 255);
-  button {
-    padding-top: 8px;
-    margin-left: 664px;
-  }
 `;
 
 export const Close = styled('button')`
   padding-top: 8px;
-  margin-left: 664px;
+  margin-left: 94%;
   border: none;
 `;
 
@@ -43,8 +39,8 @@ const VideoWrapper = styled('div')`
   align-items: center;
   justify-content: center;
   margin: 8px;
-  width: 500px;
-  height: 281px;
+  width: 470px;
+  height: 235px;
   border-radius: 10px;
   box-shadow: 2px 2px 5px 0px;
   background-color: white;

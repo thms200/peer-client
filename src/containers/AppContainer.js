@@ -15,6 +15,7 @@ import { MESSAGE } from '../constants/message';
 const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
+    min-width: 1000px;
     font-family: 'PT Sans', sans-serif;
     overflow: scroll;
     background-color: #ededed;
