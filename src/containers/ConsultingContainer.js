@@ -17,7 +17,7 @@ import {
   initialWaitingCustomers,
   initialCurrentCustomer,
 } from '../actions';
-import { API, fetchAudio } from '../utils/api';
+import { fetchAudio } from '../utils/api';
 import { MESSAGE } from '../constants/message';
 
 const Wrapper = styled('div')`
@@ -56,7 +56,7 @@ export default function ConsultingContainer() {
   };
 
   const onConsultant = () => {
-    const initailSocket = io(API);
+    const initailSocket = io(process.env.REACT_APP_API_URL);
     initailSocket.emit('onConsulting', consultantId, (message) => {
       alert(message);
     });

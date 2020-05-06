@@ -1,5 +1,4 @@
 import axios from 'axios';
-export const API = process.env.REACT_APP_API_URL;
 
 export const logInFacebook = (auth) => {
   const { email, name, picture } = auth;
@@ -7,7 +6,7 @@ export const logInFacebook = (auth) => {
   const payload = { email, name, picture_url };
   return axios({
     method: 'post',
-    url: `${API}/api/users/login`,
+    url: `${process.env.REACT_APP_API_URL}/api/users/login`,
     headers: { 'Content-Type': 'application/json' },
     data: payload
   });
@@ -16,7 +15,7 @@ export const logInFacebook = (auth) => {
 export const getAuth = (token) => {
   return axios({
     method: 'post',
-    url: `${API}/api/users/auth`,
+    url: `${process.env.REACT_APP_API_URL}/api/users/auth`,
     headers: {
       'Content-Type': 'application/json',
       'x-access-token': `${token}`,
@@ -33,7 +32,7 @@ export const fetchAudio = (blob, consultantId, customerName, isFinal, isVoice, t
 
   return axios({
     method: 'post',
-    url: `${API}/api/users/${consultantId}/consultings`,
+    url: `${process.env.REACT_APP_API_URL}/api/users/${consultantId}/consultings`,
     headers: {
       'Content-Type': 'application/json',
       'x-access-token': token
@@ -45,7 +44,7 @@ export const fetchAudio = (blob, consultantId, customerName, isFinal, isVoice, t
 export const fetchConsultings = (token, consultantId, customer) => {
   return axios({
     method: 'get',
-    url: `${API}/api/users/${consultantId}/consultings?customer=${customer}`,
+    url: `${process.env.REACT_APP_API_URL}/api/users/${consultantId}/consultings?customer=${customer}`,
     headers: {
       'Content-Type': 'application/json',
       'x-access-token': token
