@@ -3,7 +3,8 @@
   "env": {
     "browser": true,
     "commonjs": true,
-    "es6": true
+    "es6": true,
+    "cypress/globals": true
   },
   "globals": {
     "Atomics": "readonly",
@@ -12,6 +13,9 @@
   "parserOptions": {
     "ecmaVersion": 2018
   },
+  "plugins": [
+    "cypress"
+  ],
   "rules": {
     "indent": [
       "error",
