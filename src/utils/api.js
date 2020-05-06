@@ -1,5 +1,5 @@
 import axios from 'axios';
-const API = process.env.REACT_APP_API_URL;
+export const API = process.env.REACT_APP_API_URL;
 
 export const logInFacebook = (auth) => {
   const { email, name, picture } = auth;
