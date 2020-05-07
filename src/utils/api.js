@@ -1,5 +1,5 @@
 import axios from 'axios';
-export const API = (process.env.NODE_ENV !== 'production') ? process.env.REACT_APP_LOCAL_API_URL : process.env.REACT_APP_API_URL;
+export const API = 'https://api.withpeer.site';
 
 export const logInFacebook = (auth) => {
   const { email, name, picture } = auth;

@@ -7,7 +7,7 @@ const LoaderDiv = styled('div')`
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 3;
+  z-index: 4;
   line-height: 99vh;
   color: white;
   font-size: 70px;

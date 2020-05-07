@@ -12,7 +12,7 @@ const Wrapper = styled('div')`
   height: 100%;
   background: url("https://cdn.pixabay.com/photo/2015/01/08/18/27/startup-593341_1280.jpg");
   background-size: cover;
-  z-index: 5;
+  z-index: 3;
 `;
 
 const Title = styled('div')`
