@@ -133,15 +133,14 @@ function AppContainer() {
         />
         <Route
           path="/login"
-          render={() => {
-            return (<Login
+          render={() => (
+            <Login
               isLogin={isLogin}
               isLoading={isLoading}
               onClick={onLoginClick}
               callback={responseFacebook}
             />
-            );
-          }}
+          )}
         />
         <Route
           path="/privacy"
