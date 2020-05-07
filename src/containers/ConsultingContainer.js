@@ -56,7 +56,7 @@ export default function ConsultingContainer() {
   };
 
   const onConsultant = () => {
-    const initailSocket = io(API);
+    const initailSocket = io(API, { transports: ['websocket'] });
     initailSocket.emit('onConsulting', consultantId, (message) => {
       alert(message);
     });
