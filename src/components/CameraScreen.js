@@ -10,6 +10,7 @@ const Section = styled('section')`
   width: 85%;
   height: 86vh;
   margin-top: 9vh;
+  margin-left: 200px;
   padding: 20px;
   border-left: 1px solid #c1c0c0;
 `;

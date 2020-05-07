@@ -6,9 +6,11 @@ import { FaCamera, FaMicrophone } from 'react-icons/fa';
 
 const Wrapper = styled('aside')`
   display: flex;
+  position: fixed;
   align-items: center;
   flex-direction: column;
-  width: 15%;
+  width: 200px;
+  height: calc(100% - 9vh);
   margin-top: 9vh;
   padding: 0 5px;
   overflow-y: auto;
@@ -64,7 +66,7 @@ export const AllButton = styled('button')`
 
 const Privacy = styled('span')`
   position: absolute;
-  top: 96vh;
+  bottom: 1.8vh;
   left: 1vh;
 
   & a {
