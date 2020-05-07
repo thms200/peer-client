@@ -7,6 +7,7 @@ const Wrapper = styled('section')`
   width: 85%;
   height: 91vh;
   margin-top: 9vh;
+  margin-left: 200px; 
 `;
 
 export const Loading = styled('div')`
