@@ -56,8 +56,8 @@ export default function ConsultingContainer() {
   };
 
   const onConsultant = () => {
-    console.log('back');
-    const initailSocket = io(API, { secure: true });
+    console.log('socket test');
+    const initailSocket = io(`${API}:3030`);
     initailSocket.emit('onConsulting', consultantId, (message) => {
       alert(message);
     });
