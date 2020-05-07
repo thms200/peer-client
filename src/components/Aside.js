@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { FaCamera, FaMicrophone } from 'react-icons/fa';
@@ -30,7 +31,7 @@ export const CustomerBox = styled('div')`
   }}
 `;
 
-const AsideH2 = styled('h2')`
+export const AsideH2 = styled('h2')`
   align-self: baseline;
   margin: 20px 20px 5px;
   font-family: 'Gamja Flower', cursive;
@@ -59,6 +60,21 @@ export const AllButton = styled('button')`
   border-style: none;
   color: white;
   background-color: black;
+`;
+
+const Privacy = styled('span')`
+  position: absolute;
+  top: 96vh;
+  left: 1vh;
+
+  & a {
+    color: #bdbcbc;
+  }
+
+  & a:hover {
+    color: grey;
+    background-color: transparent;
+  }
 `;
 
 export default function Aside({ customers, onClick, page, title, consultant }) {
@@ -105,6 +121,7 @@ export default function Aside({ customers, onClick, page, title, consultant }) {
           </CustomerBox>
         );
       })}
+      <Privacy><Link to="/privacy">Privacy</Link></Privacy>
     </Wrapper>
   );
 }

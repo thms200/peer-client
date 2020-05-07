@@ -8,6 +8,7 @@ import ConsultingContainer from './ConsultingContainer';
 import InstallContainer from './InstallContainer';
 import DemoContainer from './DemoContainer';
 import Header from '../components/Header';
+import Privacy from '../components/Privacy';
 import { loginUser, logoutUser, setLoading } from '../actions';
 import { logInFacebook, getAuth } from '../utils/api';
 import { MESSAGE } from '../constants/message';
@@ -27,8 +28,8 @@ const GlobalStyle = createGlobalStyle`
 
     &:hover {
       border-radius: 10px;
-      background-color: #e4dcdc;
       color: black;
+      background-color: #e4dcdc;
     }
   }
   button {
@@ -141,6 +142,10 @@ function AppContainer() {
             />
             );
           }}
+        />
+        <Route
+          path="/privacy"
+          component={Privacy}
         />
         <Redirect to={'/'} />
       </Switch>

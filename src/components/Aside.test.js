@@ -1,6 +1,6 @@
 import React from 'react';
-import { mount } from 'enzyme';
-import Aside, { CustomerBox, InfoDiv, AllButton } from './Aside';
+import { shallow } from 'enzyme';
+import Aside, { AsideH2, CustomerBox, InfoDiv, AllButton } from './Aside';
 
 const mockWaitingCustomers = [
   {
@@ -38,7 +38,7 @@ const mockCustomerHistory = [
 
 describe('<Aside>', () => {
   describe('<Case MainContainer>', () => {
-    const asideMain = mount(
+    const asideMain = shallow(
       <Aside
         customers={mockCustomerHistory}
         onClick={() => {}}
@@ -49,21 +49,21 @@ describe('<Aside>', () => {
     );
 
     it('should be a suitable message on the main container.', () => {
-      expect(asideMain.find('h2').text()).toBe('History');
-      expect(asideMain.find(InfoDiv).text()).toBe('Select your custmer!');
+      expect(asideMain.find(AsideH2).text()).toEqual('History');
+      expect(asideMain.find(InfoDiv).text()).toEqual('Select your custmer!');
     });
 
     it('should show all button if cusotmer name click', () => {
       expect(asideMain.find(AllButton).length).toBe(0);
 
-      asideMain.find(CustomerBox).at(0).simulate('click');
+      asideMain.find(CustomerBox).at(0).simulate('click', { currentTarget: 'test' });
       expect(asideMain.find(AllButton).length).toBe(1);
       expect(asideMain.find(AllButton).text()).toBe('all');
     });
   });
 
   describe('<Case ConsultingContainer>', () => {
-    const asideConsulting = mount(
+    const asideConsulting = shallow(
       <Aside
         customers={mockWaitingCustomers}
         page="consulting"
@@ -72,7 +72,7 @@ describe('<Aside>', () => {
     );
 
     it('should be a suitable message on the consulting container.', () => {
-      expect(asideConsulting.find('h2').text()).toBe('Waiting Customer');
+      expect(asideConsulting.find(AsideH2).text()).toBe('Waiting Customer');
       expect(asideConsulting.find(InfoDiv).text()).toBe('The customer is waiting for you!');
     });
   });
