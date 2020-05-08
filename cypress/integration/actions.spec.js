@@ -20,7 +20,6 @@ describe('<cypress>', () => {
       body: payload,
     })
       .then((res) => {
-        console.log(res);
         localStorage.setItem('x-access-token', `Bearer ${res.body.token}`);
       });
     cy.visit('https://localhost:3000/');
@@ -211,7 +210,6 @@ describe('<cypress>', () => {
       .eq(2)
       .click()
       .then(() => {
-        console.log(message);
         expect(message[0]).to.contain('고객이 입력한 이름과 이메일이 유효한지 확인합니다.');
         expect(message[1]).to.contain('고객이 원하는 상담 모드에 맞춰 상담이 연결됩니다.');
         expect(message[2]).to.contain('상담 완료 후 종료하면 상담연결도 함께 종료됩니다.');
