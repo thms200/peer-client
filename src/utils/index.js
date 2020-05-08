@@ -26,7 +26,7 @@ export const makeCode = (consultantId, consultantName) => {
     <body>
       <div class="consultant-id" id="${consultantId}"></div>
       <div class="consultant-name" id="${consultantName}"></div>
-      <script src="${cdnUrl}/${github}/peer_0.7.js"></script>
+      <script src="${cdnUrl}/${github}/peer_0.8.js"></script>   
     </body>
 
 
