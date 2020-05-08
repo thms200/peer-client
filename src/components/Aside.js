@@ -14,6 +14,8 @@ const Wrapper = styled('aside')`
   margin-top: 9vh;
   padding: 0 5px;
   overflow-y: auto;
+  background: #ededed;
+  z-index: 1
 `;
 
 export const CustomerBox = styled('div')`
