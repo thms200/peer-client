@@ -1,6 +1,6 @@
 # [Peer](https://www.withpeer.site)
 
-* [Introduction](https://github.com/thms200/peer-clientt#Introduction)
+* [Introduction](https://github.com/thms200/peer-client#Introduction)
 * [Features](https://github.com/thms200/peer-client#Features)
 * [Tech Stack](https://github.com/thms200/peer-client#Tech-Stack)
 * [Install](https://github.com/thms200/peer-client#Install)
