@@ -17,7 +17,7 @@ import {
   initialWaitingCustomers,
   initialCurrentCustomer,
 } from '../actions';
-import { API, fetchAudio } from '../utils/api';
+import { fetchAudio } from '../utils/api';
 import { MESSAGE } from '../constants/message';
 
 const Wrapper = styled('div')`
@@ -54,9 +54,9 @@ export default function ConsultingContainer() {
       if (err.response) alert(err.response.data.errMessage);
     }
   };
-
+  const socketAPI = (process.env.NODE_ENV !== 'production') ? 'http://localhost:3030' : 'https://api.withpeer.site:3030';
   const onConsultant = () => {
-    const initailSocket = io(API);
+    const initailSocket = io(socketAPI);
     initailSocket.emit('onConsulting', consultantId, (message) => {
       alert(message);
     });

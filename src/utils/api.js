@@ -1,5 +1,5 @@
 import axios from 'axios';
-export const API = (process.env.NODE_ENV !== 'production') ? 'http://localhost:5000' : 'https://api.withpeer.site';
+const API = (process.env.NODE_ENV !== 'production') ? 'http://localhost:5000' : 'https://api.withpeer.site';
 
 export const logInFacebook = (auth) => {
   const { email, name, picture } = auth;
