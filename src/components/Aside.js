@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { FaCamera, FaMicrophone } from 'react-icons/fa';
@@ -15,7 +14,7 @@ const Wrapper = styled('aside')`
   padding: 0 5px;
   overflow-y: auto;
   background: #ededed;
-  z-index: 1
+  z-index: 1;
 `;
 
 export const CustomerBox = styled('div')`
@@ -66,21 +65,6 @@ export const AllButton = styled('button')`
   background-color: black;
 `;
 
-const Privacy = styled('span')`
-  position: absolute;
-  bottom: 1.8vh;
-  left: 1vh;
-
-  & a {
-    color: #bdbcbc;
-  }
-
-  & a:hover {
-    color: grey;
-    background-color: transparent;
-  }
-`;
-
 export default function Aside({ customers, onClick, page, title, consultant }) {
   const [isClicked, setIsClicked] = useState(false);
   const isHome = page === 'home';
@@ -125,7 +109,6 @@ export default function Aside({ customers, onClick, page, title, consultant }) {
           </CustomerBox>
         );
       })}
-      <Privacy><Link to="/privacy">Privacy</Link></Privacy>
     </Wrapper>
   );
 }
